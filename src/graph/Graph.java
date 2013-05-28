@@ -1,4 +1,5 @@
 package graph;
+
 /**
  *
  * @author Patrick Beuks (s2288842), Floris Huizinga (s2397617) and
@@ -12,5 +13,4 @@ public class Graph {
     public static void main(String[] args) {
         // TODO code application logic here
     }
-
 }

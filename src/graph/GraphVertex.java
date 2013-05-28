@@ -8,12 +8,18 @@ import java.awt.Point;
  * @author Timo Smit (s2337789)
  */
 public class GraphVertex {
-        private String name = "default";
-    public void graphVertex(){
-        
+
+    private String name = "default";
+    private Point position = null;
+
+    public void graphVertex() {
     }
-    
-    public boolean contains(Point p){
+
+    public boolean contains(Point p) {
         return false;
+    }
+
+    public void setPosition(Point p) {
+        this.position = p;
     }
 }

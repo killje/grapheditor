@@ -10,40 +10,35 @@ import java.util.Iterator;
  * @author Timo Smit (s2337789)
  */
 public class GraphModel {
+
     private ArrayList<GraphVertex> vertices;
     private ArrayList<GraphEdge> edges;
-    
-    public void GraphModel(){
+
+    public void GraphModel() {
         this.vertices = new ArrayList<>();
         this.edges = new ArrayList<>();
     }
-    
-    public void addVertex(GraphVertex v){
+
+    public void addVertex(GraphVertex v) {
         this.vertices.add(v);
     }
-    
-    public void addEdge(GraphEdge e){
+
+    public void addEdge(GraphEdge e) {
         this.edges.add(e);
     }
-    
-    public void removeVertex(GraphVertex v){
+
+    public void removeVertex(GraphVertex v) {
         Iterator<GraphEdge> iter = edges.iterator();
-        while(iter.hasNext()){
+        while (iter.hasNext()) {
             GraphEdge edge = iter.next();
-            if(edge.isIncedent(v)){
+            if (edge.isIncedent(v)) {
                 iter.remove();
             }
         }
         this.vertices.remove(v);
     }
-    
-    public GraphVertex getVertex(Point p){
-        GraphVertex returnVertex = new GraphVertex();
-        for(int i =0;i<this.vertices.size();i++){
-            if(this.vertices.get(i).contains(p)){
-                return this.vertices.get(i);
-            }
-        }
-        return returnVertex;
+
+    public ArrayList<GraphVertex> getVertices() {
+        return this.vertices;
     }
 }
