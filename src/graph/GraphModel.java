@@ -1,5 +1,6 @@
 package graph;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -34,5 +35,15 @@ public class GraphModel {
             }
         }
         this.vertices.remove(v);
+    }
+    
+    public GraphVertex getVertex(Point p){
+        GraphVertex returnVertex = new GraphVertex();
+        for(int i =0;i<this.vertices.size();i++){
+            if(this.vertices.get(i).contains(p)){
+                return this.vertices.get(i);
+            }
+        }
+        return returnVertex;
     }
 }
