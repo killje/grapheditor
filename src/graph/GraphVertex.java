@@ -1,6 +1,7 @@
 package graph;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 
 /**
  *
@@ -9,10 +10,17 @@ import java.awt.Point;
  */
 public class GraphVertex {
 
-    private String name = "default";
-    private Point position = null;
+    private String name;
+    private Point position;
+    private Rectangle vertex;
+
+    public void graphVertex(Point p, int width, int height, String name) {
+        this.name = name;
+        vertex = new Rectangle(p.x, p.y, width, height);
+    }
 
     public void graphVertex() {
+        graphVertex(new Point(50, 50), 100, 40, "default");
     }
 
     public boolean contains(Point p) {
