@@ -19,7 +19,7 @@ public class GraphFrame extends JFrame {
     private void init() {
 
         setTitle("Graph editor");
-        setSize(500, 500);
+        setSize(Graph.FRAME_WIDTH, Graph.FRAME_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Container contentPane = getContentPane();
@@ -28,7 +28,7 @@ public class GraphFrame extends JFrame {
         this.add(addToolBar());
 
         GraphModel graphModel = new GraphModel();
-        graphModel.addVertex(new GraphVertex(150, 50, 100, 30, "Default"));
+        graphModel.addVertex(new GraphVertex());
 
         JPanel graphPanel = new GraphPanel(graphModel);
         contentPane.add(graphPanel);
