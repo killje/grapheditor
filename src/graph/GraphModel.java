@@ -1,15 +1,15 @@
 package graph;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Observable;
 
 /**
  *
  * @author Patrick Beuks (s2288842), Floris Huizinga (s2397617) and
  * @author Timo Smit (s2337789)
  */
-public class GraphModel {
+public class GraphModel extends Observable {
 
     private ArrayList<GraphVertex> vertices;
     private ArrayList<GraphEdge> edges;
@@ -21,10 +21,12 @@ public class GraphModel {
 
     public void addVertex(GraphVertex v) {
         this.vertices.add(v);
+        notifyObservers();
     }
 
     public void addEdge(GraphEdge e) {
         this.edges.add(e);
+        notifyObservers();
     }
 
     public void removeVertex(GraphVertex v) {
@@ -36,6 +38,7 @@ public class GraphModel {
             }
         }
         this.vertices.remove(v);
+        notifyObservers();
     }
 
     public ArrayList<GraphVertex> getVertices() {
