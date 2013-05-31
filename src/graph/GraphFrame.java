@@ -2,7 +2,6 @@ package graph;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
 
@@ -14,63 +13,7 @@ import javax.swing.*;
 public class GraphFrame extends JFrame {
 
     public GraphFrame() {
-        this.init();
-    }
-
-    private class LoadAction extends AbstractAction {
-        
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.println("itemLoad.");
-        }
-    }
-
-    private class SaveAction extends AbstractAction {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.println("itemSave.");
-        }
-    }
-
-    private class QuitAction extends AbstractAction {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.exit(0);
-        }
-    }
-
-    private class UndoAction extends AbstractAction {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.println("itemUndo.");
-        }
-    }
-
-    private class RedoAction extends AbstractAction {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.println("itemRedo.");
-        }
-    }
-
-    private class AddVertexAction extends AbstractAction {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.println("itemAddVertex.");
-        }
-    }
-
-    private class AddEdgeAction extends AbstractAction {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.println("itemAddEdge.");
-        }
+        init();
     }
 
     private void init() {
@@ -81,55 +24,12 @@ public class GraphFrame extends JFrame {
 
         Container contentPane = getContentPane();
 
-        JMenuBar menuBar = new JMenuBar();
-
-        JMenu menuFile = new JMenu("File");
-        menuFile.setMnemonic(KeyEvent.VK_F);
-        JMenuItem itemLoad = new JMenuItem(new LoadAction());
-        itemLoad.setText("Load");
-        itemLoad.setMnemonic(KeyEvent.VK_L);
-        menuFile.add(itemLoad);
-        JMenuItem itemSave = new JMenuItem(new SaveAction());
-        itemSave.setText("Save");
-        itemSave.setMnemonic(KeyEvent.VK_S);
-        menuFile.add(itemSave);
-        JMenuItem itemQuit = new JMenuItem(new QuitAction());
-        itemQuit.setText("Quit");
-        itemQuit.setMnemonic(KeyEvent.VK_Q);
-        menuFile.add(itemQuit);
-        menuBar.add(menuFile);
-
-        JMenu menuEdit = new JMenu("Edit");
-        menuEdit.setMnemonic(KeyEvent.VK_E);
-        JMenuItem itemUndo = new JMenuItem(new UndoAction());
-        itemUndo.setText("Undo");
-        itemUndo.setMnemonic(KeyEvent.VK_U);
-        menuEdit.add(itemUndo);
-        JMenuItem itemRedo = new JMenuItem(new RedoAction());
-        itemRedo.setText("Redo");
-        itemRedo.setMnemonic(KeyEvent.VK_R);
-        menuEdit.add(itemRedo);
-        JMenuItem itemAddVertex = new JMenuItem(new AddVertexAction());
-        itemAddVertex.setText("Add vertex");
-        itemAddVertex.setMnemonic(KeyEvent.VK_V);
-        menuEdit.add(itemAddVertex);
-        JMenuItem itemAddEdge = new JMenuItem(new AddEdgeAction());
-        itemAddEdge.setText("Add edge");
-        itemAddEdge.setMnemonic(KeyEvent.VK_E);
-        menuEdit.add(itemAddEdge);
-        menuBar.add(menuEdit);
-
-        JMenu menuWindow = new JMenu("Window");
-        menuWindow.setMnemonic(KeyEvent.VK_W);
-        JMenuItem itemHideBar = new JMenuItem("Hide bar");
-        itemHideBar.setMnemonic(KeyEvent.VK_H);
-        menuWindow.add(itemHideBar);
-        menuBar.add(menuWindow);
-
-        setJMenuBar(menuBar);
+        setJMenuBar(addMenuBar());
+        this.add(addToolBar());
         
         GraphModel graphModel = new GraphModel();
         graphModel.addVertex(new GraphVertex());
+        
         JPanel graphPanel = new GraphPanel(graphModel);
         contentPane.add(graphPanel);
 
@@ -138,7 +38,8 @@ public class GraphFrame extends JFrame {
 
     private JToolBar addToolBar() {
         JToolBar toolBar = new JToolBar();
-        toolBar.add(saveButton());
+        toolBar.add(addButton("Add Vertex", new AddVertexAction()));
+        toolBar.add(addButton("Add Edge", new AddVertexAction()));
         return toolBar;
     }
 
@@ -148,13 +49,14 @@ public class GraphFrame extends JFrame {
         JMenu menuFile = addMenu("File",KeyEvent.VK_F);
         menuFile.add(addMenuItem("Load",KeyEvent.VK_L,new LoadAction()));
         menuFile.add(addMenuItem("Save",KeyEvent.VK_S,new SaveAction()));
+        menuFile.add(addMenuItem("Quit",KeyEvent.VK_Q,new QuitAction()));
         menuBar.add(menuFile);
         
         JMenu menuEdit = addMenu("Edit",KeyEvent.VK_E);
         menuEdit.add(addMenuItem("Undo",KeyEvent.VK_U,new UndoAction()));
         menuEdit.add(addMenuItem("Redo",KeyEvent.VK_R,new RedoAction()));
-        menuEdit.add(addMenuItem("add Vertex",KeyEvent.VK_V,new addVertexAction()));
-        menuEdit.add(addMenuItem("add Edge",KeyEvent.VK_E,new addEdgeAction()));
+        menuEdit.add(addMenuItem("add Vertex",KeyEvent.VK_V,new AddVertexAction()));
+        menuEdit.add(addMenuItem("add Edge",KeyEvent.VK_E,new AddEdgeAction()));
         menuBar.add(menuEdit);
         
         JMenu menuWindow = addMenu("Window",KeyEvent.VK_W);
@@ -169,17 +71,17 @@ public class GraphFrame extends JFrame {
         return menu;
     }
     
-    private Button saveButton() {
-        Button saveButton = new Button("Save");
-        saveButton.addActionListener(new SaveAction());
-        return saveButton;
-    }
-    
     private JMenuItem addMenuItem(String name,int shortKey,AbstractAction listner){
         JMenuItem menuItem = new JMenuItem(name);
         menuItem.addActionListener(listner);
         menuItem.setMnemonic(shortKey);
         return menuItem;
+    }
+    
+    private Button addButton(String name, AbstractAction listner) {
+        Button Button = new Button(name);
+        Button.addActionListener(listner);
+        return Button;
     }
     
     private class SaveAction extends AbstractAction {
@@ -196,6 +98,13 @@ public class GraphFrame extends JFrame {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
+    private class QuitAction extends AbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+        }
+    }
     private class UndoAction extends AbstractAction {
 
         @Override
@@ -210,14 +119,14 @@ public class GraphFrame extends JFrame {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
-    private class addVertexAction extends AbstractAction {
+    private class AddVertexAction extends AbstractAction {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
-    private class addEdgeAction extends AbstractAction {
+    private class AddEdgeAction extends AbstractAction {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
