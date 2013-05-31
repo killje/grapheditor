@@ -28,7 +28,11 @@ public class GraphFrame extends JFrame {
         this.add(addToolBar());
 
         GraphModel graphModel = new GraphModel();
-        graphModel.addVertex(new GraphVertex(150, 50, 100, 30, "Default"));
+        GraphVertex v1 = new GraphVertex(150, 50, 100, 30, "Default");
+        GraphVertex v2 = new GraphVertex(150, 250, 100, 30, "Default");
+        graphModel.addVertex(v1);
+        GraphEdge edge = new GraphEdge(v1, v2);
+        graphModel.addEdge(edge);
 
         JPanel graphPanel = new GraphPanel(graphModel);
         contentPane.add(graphPanel);
@@ -55,8 +59,8 @@ public class GraphFrame extends JFrame {
         JMenu menuEdit = addMenu("Edit", KeyEvent.VK_E);
         menuEdit.add(addMenuItem("Undo", KeyEvent.VK_U, new UndoAction()));
         menuEdit.add(addMenuItem("Redo", KeyEvent.VK_R, new RedoAction()));
-        menuEdit.add(addMenuItem("add Vertex", KeyEvent.VK_V, new AddVertexAction()));
-        menuEdit.add(addMenuItem("add Edge", KeyEvent.VK_E, new AddEdgeAction()));
+        menuEdit.add(addMenuItem("Add vertex", KeyEvent.VK_V, new AddVertexAction()));
+        menuEdit.add(addMenuItem("Add edge", KeyEvent.VK_E, new AddEdgeAction()));
         menuBar.add(menuEdit);
 
         JMenu menuWindow = addMenu("Window", KeyEvent.VK_W);
