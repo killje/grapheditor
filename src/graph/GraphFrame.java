@@ -22,10 +22,9 @@ public class GraphFrame extends JFrame {
         setSize(Graph.FRAME_WIDTH, Graph.FRAME_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        Container contentPane = getContentPane();
 
-        setJMenuBar(addMenuBar());
         this.add(addToolBar());
+        setJMenuBar(addMenuBar());
 
         GraphModel graphModel = new GraphModel();
         GraphVertex v1 = new GraphVertex(150, 50, 100, 30, "Default");
@@ -35,13 +34,14 @@ public class GraphFrame extends JFrame {
         graphModel.addEdge(edge);
 
         JPanel graphPanel = new GraphPanel(graphModel);
-        contentPane.add(graphPanel);
+        this.add(graphPanel);
 
         setVisible(true);
     }
 
     private JToolBar addToolBar() {
         JToolBar toolBar = new JToolBar();
+        toolBar.setSize(500,40);
         toolBar.add(addButton("Add Vertex", new AddVertexAction()));
         toolBar.add(addButton("Add Edge", new AddVertexAction()));
         return toolBar;
