@@ -28,7 +28,7 @@ public class GraphFrame extends JFrame {
         this.add(addToolBar());
 
         GraphModel graphModel = new GraphModel();
-        graphModel.addVertex(new GraphVertex());
+        graphModel.addVertex(new GraphVertex(50, 50, 100, 30, "Default"));
 
         JPanel graphPanel = new GraphPanel(graphModel);
         contentPane.add(graphPanel);

@@ -20,7 +20,7 @@ public class GraphVertex {
     }
 
     public GraphVertex() {
-        this(50, 50, 100, 40, "default");
+        this(0, 0, 100, 30, "default");
     }
 
     public boolean contains(Point p) {
