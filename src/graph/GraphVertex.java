@@ -16,11 +16,11 @@ public class GraphVertex {
 
     public GraphVertex(int x, int y, int width, int height, String name) {
         this.name = name;
-        vertex = new Rectangle(x, y, width, height);
+        vertex = new Rectangle(x+(width/2), y+(height/2), width, height);
     }
 
     public GraphVertex() {
-        this(0, 0, 100, 30, "default");
+        this(0, 0, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "default");
     }
 
     public boolean contains(Point p) {

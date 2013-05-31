@@ -19,7 +19,7 @@ public class GraphFrame extends JFrame {
     private void init() {
 
         setTitle("Graph editor");
-        setSize(500, 500);
+        setSize(Graph.FRAME_WIDTH, Graph.FRAME_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Container contentPane = getContentPane();
