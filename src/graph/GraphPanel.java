@@ -31,7 +31,7 @@ public class GraphPanel extends JPanel implements Observer {
         if (model.getVertices() != null) {
             for (GraphVertex vertex : model.getVertices()) {
                 Rectangle rect = vertex.getVertex();
-                g.drawRect((int) rect.getX(), (int) rect.getY(), (int) rect.getWidth(), (int) rect.getHeight());
+                g.drawRect((int) rect.getX() - (int) (rect.getWidth() / 2), (int) rect.getY() - (int) (rect.getHeight() / 2), (int) rect.getWidth(), (int) rect.getHeight());
             }
         }
     }
