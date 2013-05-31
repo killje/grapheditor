@@ -30,7 +30,7 @@ public class GraphPanel extends JPanel implements Observer {
     public void paintAllComponents(Graphics g) {
         if (model.getVertices() != null) {
             for (GraphVertex vertex : model.getVertices()) {
-                Rectangle rect = vertex.getVertex();
+                Rectangle rect = vertex.getVertexRectangle();
                 g.drawRect((int) rect.getX(), (int) rect.getY(), (int) rect.getWidth(), (int) rect.getHeight());
             }
         }

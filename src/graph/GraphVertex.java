@@ -30,8 +30,13 @@ public class GraphVertex {
     public void setPosition(Point p) {
         this.position = p;
     }
-
-    public Rectangle getVertex() {
+    
+    public Rectangle getVertexRectangle(){
         return this.vertex;
     }
+
+    public String getVertexName() {
+        return this.name;
+    }
+   
 }
