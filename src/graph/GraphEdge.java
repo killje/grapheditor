@@ -20,4 +20,12 @@ public class GraphEdge {
         }
         return false;
     }
+    
+    public GraphVertex getFirstVertex(){
+        return first;
+    }
+    
+    public GraphVertex getSecondVertex(){
+        return second;
+    }
 }

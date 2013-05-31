@@ -1,5 +1,6 @@
 package graph;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Observable;
@@ -27,18 +28,36 @@ public class GraphPanel extends JPanel implements Observer {
         this.model.addObserver(this);
     }
 
-    public void paintAllComponents(Graphics g) {
+    public void paintVertices(Graphics g) {
         if (model.getVertices() != null) {
             for (GraphVertex vertex : model.getVertices()) {
                 Rectangle rect = vertex.getVertexRectangle();
+                g.setColor(Color.WHITE);
+                g.fillRect((int) rect.getX(), (int) rect.getY(), (int) rect.getWidth(), (int) rect.getHeight());
+                g.setColor(Color.GRAY);
                 g.drawRect((int) rect.getX(), (int) rect.getY(), (int) rect.getWidth(), (int) rect.getHeight());
+                
+            }
+        }
+        
+    }
+    
+    public void paintEdges(Graphics g){
+        if (model.getEdges() != null) {
+            for (GraphEdge edge : model.getEdges()) {
+                Rectangle v1,v2;
+                v1 = edge.getFirstVertex().getVertexRectangle();
+                v2 = edge.getSecondVertex().getVertexRectangle();
+                g.setColor(Color.BLACK);
+                g.drawLine((int) v1.getX() + (int) v1.getWidth()/2, (int) v1.getY() + (int) v1.getHeight()/2,(int) v2.getX() + (int) v2.getWidth()/2, (int) v2.getY() + (int) v2.getHeight()/2);
             }
         }
     }
 
     @Override
     public void paintComponent(Graphics g) {
-        paintAllComponents(g);
+        paintEdges(g);
+        paintVertices(g);
     }
 
     @Override

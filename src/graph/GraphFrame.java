@@ -1,6 +1,5 @@
 package graph;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
@@ -22,7 +21,6 @@ public class GraphFrame extends JFrame {
         setSize(Graph.FRAME_WIDTH, Graph.FRAME_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
         this.add(addToolBar());
         setJMenuBar(addMenuBar());
 
@@ -30,10 +28,12 @@ public class GraphFrame extends JFrame {
         GraphVertex v1 = new GraphVertex(150, 50, 100, 30, "Default");
         GraphVertex v2 = new GraphVertex(150, 250, 100, 30, "Default");
         graphModel.addVertex(v1);
+        graphModel.addVertex(v2);
         GraphEdge edge = new GraphEdge(v1, v2);
         graphModel.addEdge(edge);
 
         JPanel graphPanel = new GraphPanel(graphModel);
+        
         this.add(graphPanel);
 
         setVisible(true);
@@ -41,7 +41,8 @@ public class GraphFrame extends JFrame {
 
     private JToolBar addToolBar() {
         JToolBar toolBar = new JToolBar();
-        toolBar.setSize(500,40);
+        toolBar.setSize(this.getWidth(),40);
+        toolBar.setFloatable(false);
         toolBar.add(addButton("Add Vertex", new AddVertexAction()));
         toolBar.add(addButton("Add Edge", new AddVertexAction()));
         return toolBar;
