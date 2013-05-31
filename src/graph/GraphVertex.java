@@ -16,7 +16,7 @@ public class GraphVertex {
 
     public GraphVertex(int x, int y, int width, int height, String name) {
         this.name = name;
-        vertex = new Rectangle(x+(width/2), y+(height/2), width, height);
+        vertex = new Rectangle(x, y, width, height);
     }
 
     public GraphVertex() {
