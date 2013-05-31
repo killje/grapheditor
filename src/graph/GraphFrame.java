@@ -21,31 +21,25 @@ public class GraphFrame extends JFrame {
         setSize(Graph.FRAME_WIDTH, Graph.FRAME_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        this.add(addToolBar());
         setJMenuBar(addMenuBar());
 
         GraphModel graphModel = new GraphModel();
         GraphVertex v1 = new GraphVertex(150, 50, 100, 30, "Default");
-        GraphVertex v2 = new GraphVertex(150, 250, 100, 30, "Default");
+        GraphVertex v2 = new GraphVertex(150, 250, 100, 30, "Dit is lange tekst");
+        GraphVertex v3 = new GraphVertex(/* kijken of Default werkt*/);
         graphModel.addVertex(v1);
         graphModel.addVertex(v2);
-        GraphEdge edge = new GraphEdge(v1, v2);
-        graphModel.addEdge(edge);
+        graphModel.addVertex(v3);
+        GraphEdge e1 = new GraphEdge(v1, v2);
+        GraphEdge e3 = new GraphEdge(v2, v3);
+        graphModel.addEdge(e1);
+        graphModel.addEdge(e3);
 
         JPanel graphPanel = new GraphPanel(graphModel);
         
         this.add(graphPanel);
 
         setVisible(true);
-    }
-
-    private JToolBar addToolBar() {
-        JToolBar toolBar = new JToolBar();
-        toolBar.setSize(this.getWidth(),40);
-        toolBar.setFloatable(false);
-        toolBar.add(addButton("Add Vertex", new AddVertexAction()));
-        toolBar.add(addButton("Add Edge", new AddVertexAction()));
-        return toolBar;
     }
 
     private JMenuBar addMenuBar() {

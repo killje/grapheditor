@@ -11,7 +11,6 @@ import java.awt.Rectangle;
 public class GraphVertex {
 
     private String name;
-    private Point position;
     private Rectangle vertex;
 
     public GraphVertex(int x, int y, int width, int height, String name) {
@@ -20,7 +19,7 @@ public class GraphVertex {
     }
 
     public GraphVertex() {
-        this(0, 0, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "default");
+        this(0,0, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Default");
     }
 
     public boolean contains(Point p) {
@@ -28,7 +27,7 @@ public class GraphVertex {
     }
 
     public void setPosition(Point p) {
-        this.position = p;
+        this.vertex.setLocation(p);
     }
     
     public Rectangle getVertexRectangle(){
