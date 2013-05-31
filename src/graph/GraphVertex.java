@@ -14,13 +14,13 @@ public class GraphVertex {
     private Point position;
     private Rectangle vertex;
 
-    public void graphVertex(Point p, int width, int height, String name) {
+    public GraphVertex(Point p, int width, int height, String name) {
         this.name = name;
         vertex = new Rectangle(p.x, p.y, width, height);
     }
 
-    public void graphVertex() {
-        graphVertex(new Point(50, 50), 100, 40, "default");
+    public GraphVertex() {
+        this(new Point(50, 50), 100, 40, "default");
     }
 
     public boolean contains(Point p) {

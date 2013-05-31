@@ -9,7 +9,7 @@ public class GraphEdge {
 
     private GraphVertex first, second;
 
-    public void GraphEdge(GraphVertex v1, GraphVertex v2) {
+    public GraphEdge(GraphVertex v1, GraphVertex v2) {
         this.first = v1;
         this.second = v2;
     }

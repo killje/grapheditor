@@ -33,7 +33,7 @@ public class GraphMouse extends MouseAdapter {
         }
     }
 
-    public void MosedDragged(MouseEvent e) {
+    public void MouseDragged(MouseEvent e) {
         Point point = e.getPoint();
         if(this.selectedVertex != null){
             this.selectedVertex.setPosition(point);
