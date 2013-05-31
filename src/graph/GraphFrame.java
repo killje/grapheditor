@@ -26,10 +26,10 @@ public class GraphFrame extends JFrame {
 
         setJMenuBar(addMenuBar());
         this.add(addToolBar());
-        
+
         GraphModel graphModel = new GraphModel();
         graphModel.addVertex(new GraphVertex());
-        
+
         JPanel graphPanel = new GraphPanel(graphModel);
         contentPane.add(graphPanel);
 
@@ -45,45 +45,45 @@ public class GraphFrame extends JFrame {
 
     private JMenuBar addMenuBar() {
         JMenuBar menuBar = new JMenuBar();
-        
-        JMenu menuFile = addMenu("File",KeyEvent.VK_F);
-        menuFile.add(addMenuItem("Load",KeyEvent.VK_L,new LoadAction()));
-        menuFile.add(addMenuItem("Save",KeyEvent.VK_S,new SaveAction()));
-        menuFile.add(addMenuItem("Quit",KeyEvent.VK_Q,new QuitAction()));
+
+        JMenu menuFile = addMenu("File", KeyEvent.VK_F);
+        menuFile.add(addMenuItem("Load", KeyEvent.VK_L, new LoadAction()));
+        menuFile.add(addMenuItem("Save", KeyEvent.VK_S, new SaveAction()));
+        menuFile.add(addMenuItem("Quit", KeyEvent.VK_Q, new QuitAction()));
         menuBar.add(menuFile);
-        
-        JMenu menuEdit = addMenu("Edit",KeyEvent.VK_E);
-        menuEdit.add(addMenuItem("Undo",KeyEvent.VK_U,new UndoAction()));
-        menuEdit.add(addMenuItem("Redo",KeyEvent.VK_R,new RedoAction()));
-        menuEdit.add(addMenuItem("add Vertex",KeyEvent.VK_V,new AddVertexAction()));
-        menuEdit.add(addMenuItem("add Edge",KeyEvent.VK_E,new AddEdgeAction()));
+
+        JMenu menuEdit = addMenu("Edit", KeyEvent.VK_E);
+        menuEdit.add(addMenuItem("Undo", KeyEvent.VK_U, new UndoAction()));
+        menuEdit.add(addMenuItem("Redo", KeyEvent.VK_R, new RedoAction()));
+        menuEdit.add(addMenuItem("add Vertex", KeyEvent.VK_V, new AddVertexAction()));
+        menuEdit.add(addMenuItem("add Edge", KeyEvent.VK_E, new AddEdgeAction()));
         menuBar.add(menuEdit);
-        
-        JMenu menuWindow = addMenu("Window",KeyEvent.VK_W);
-        menuWindow.add(addMenuItem("Hide bar",KeyEvent.VK_H,new HideAction()));
+
+        JMenu menuWindow = addMenu("Window", KeyEvent.VK_W);
+        menuWindow.add(addMenuItem("Hide bar", KeyEvent.VK_H, new HideAction()));
         menuBar.add(menuWindow);
         return menuBar;
     }
-    
-    private JMenu addMenu(String name,int shortKey){
+
+    private JMenu addMenu(String name, int shortKey) {
         JMenu menu = new JMenu(name);
         menu.setMnemonic(shortKey);
         return menu;
     }
-    
-    private JMenuItem addMenuItem(String name,int shortKey,AbstractAction listner){
+
+    private JMenuItem addMenuItem(String name, int shortKey, AbstractAction listner) {
         JMenuItem menuItem = new JMenuItem(name);
         menuItem.addActionListener(listner);
         menuItem.setMnemonic(shortKey);
         return menuItem;
     }
-    
-    private Button addButton(String name, AbstractAction listner) {
-        Button Button = new Button(name);
-        Button.addActionListener(listner);
-        return Button;
+
+    private JButton addButton(String name, AbstractAction listner) {
+        JButton button = new JButton(name);
+        button.addActionListener(listner);
+        return button;
     }
-    
+
     private class SaveAction extends AbstractAction {
 
         @Override
@@ -91,6 +91,7 @@ public class GraphFrame extends JFrame {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
+
     private class LoadAction extends AbstractAction {
 
         @Override
@@ -98,6 +99,7 @@ public class GraphFrame extends JFrame {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
+
     private class QuitAction extends AbstractAction {
 
         @Override
@@ -105,6 +107,7 @@ public class GraphFrame extends JFrame {
             System.exit(0);
         }
     }
+
     private class UndoAction extends AbstractAction {
 
         @Override
@@ -112,6 +115,7 @@ public class GraphFrame extends JFrame {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
+
     private class RedoAction extends AbstractAction {
 
         @Override
@@ -119,6 +123,7 @@ public class GraphFrame extends JFrame {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
+
     private class AddVertexAction extends AbstractAction {
 
         @Override
@@ -126,6 +131,7 @@ public class GraphFrame extends JFrame {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
+
     private class AddEdgeAction extends AbstractAction {
 
         @Override
@@ -133,6 +139,7 @@ public class GraphFrame extends JFrame {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
+
     private class HideAction extends AbstractAction {
 
         @Override
@@ -140,5 +147,4 @@ public class GraphFrame extends JFrame {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
-    
 }
