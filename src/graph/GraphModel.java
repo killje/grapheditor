@@ -11,8 +11,8 @@ import java.util.Observable;
  */
 public class GraphModel extends Observable {
 
-    private ArrayList<GraphVertex> vertices;
-    private ArrayList<GraphEdge> edges;
+    private ArrayList<GraphVertex> vertices = new ArrayList<>();
+    private ArrayList<GraphEdge> edges = new ArrayList<>();
 
     public void GraphModel() {
         this.vertices = new ArrayList<>();
