@@ -44,4 +44,8 @@ public class GraphModel extends Observable {
     public ArrayList<GraphVertex> getVertices() {
         return this.vertices;
     }
+
+    public ArrayList<GraphEdge> getEdges() {
+        return this.edges;
+    }
 }
