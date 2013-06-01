@@ -11,6 +11,8 @@ import javax.swing.*;
  */
 public class GraphFrame extends JFrame {
 
+    private GraphModel graphModel = new GraphModel();
+
     public GraphFrame() {
         init();
     }
@@ -23,7 +25,6 @@ public class GraphFrame extends JFrame {
 
         setJMenuBar(addMenuBar());
 
-        GraphModel graphModel = new GraphModel();
         GraphVertex v1 = new GraphVertex(150, 50, 100, 30, "Default");
         GraphVertex v2 = new GraphVertex(150, 250, 100, 30, "Dit is lange tekst");
         GraphVertex v3 = new GraphVertex(/* kijken of Default werkt*/);
@@ -34,7 +35,7 @@ public class GraphFrame extends JFrame {
         GraphEdge e3 = new GraphEdge(v2, v3);
         graphModel.addEdge(e1);
         graphModel.addEdge(e3);
-        
+
         GraphPanel graphPanel = new GraphPanel(graphModel);
         graphPanel.addMouseListener(new PanelAction(graphPanel));
         this.add(graphPanel);
