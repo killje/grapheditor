@@ -36,7 +36,7 @@ public class GraphFrame extends JFrame {
         graphModel.addEdge(e3);
 
         JPanel graphPanel = new GraphPanel(graphModel);
-        
+        graphPanel.addMouseListener(new PanelAction(graphModel));
         this.add(graphPanel);
 
         setVisible(true);
@@ -75,12 +75,6 @@ public class GraphFrame extends JFrame {
         menuItem.addActionListener(listner);
         menuItem.setMnemonic(shortKey);
         return menuItem;
-    }
-
-    private JButton addButton(String name, AbstractAction listner) {
-        JButton button = new JButton(name);
-        button.addActionListener(listner);
-        return button;
     }
 
     private class SaveAction extends AbstractAction {

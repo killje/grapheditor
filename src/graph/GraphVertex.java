@@ -23,6 +23,9 @@ public class GraphVertex {
     }
 
     public boolean contains(Point p) {
+        if (vertex.contains(p)){
+            return true;
+        }
         return false;
     }
 
