@@ -28,6 +28,10 @@ public class GraphPanel extends JPanel implements Observer {
         this.model.addObserver(this);
     }
 
+    public GraphModel getModel() {
+        return this.model;
+    }
+
     public void paintVertices(Graphics g) {
         if (model.getVertices() != null) {
             for (GraphVertex vertex : model.getVertices()) {
@@ -45,8 +49,13 @@ public class GraphPanel extends JPanel implements Observer {
                 int centerWidth = rectX + (rectWidth / 2) - (bounds.width / 2);
                 int centerHeight = rectY + (rectHeight / 2) + 5;
 
-                g.setColor(Color.WHITE);
-                g.fillRect(rectX, rectY, rectWidth, rectHeight); //vertex binnenkant tekenen
+                if (vertex.isSelected()) {
+                    g.setColor(Color.LIGHT_GRAY);
+                    g.fillRect(rectX, rectY, rectWidth, rectHeight); //vertex binnenkant tekenen
+                } else {
+                    g.setColor(Color.WHITE);
+                    g.fillRect(rectX, rectY, rectWidth, rectHeight); //vertex binnenkant tekenen
+                }
                 g.setColor(Color.GRAY);
                 g.drawRect(rectX, rectY, rectWidth, rectHeight); // vertex border tekenen
                 g.setColor(Color.BLACK);
@@ -66,7 +75,7 @@ public class GraphPanel extends JPanel implements Observer {
                 int v1Y = (int) v1.getY() + (int) v1.getHeight() / 2;
                 int v2X = (int) v2.getX() + (int) v2.getWidth() / 2;
                 int V2Y = (int) v2.getY() + (int) v2.getHeight() / 2;
-                
+
                 g.setColor(Color.BLACK);
                 g.drawLine(v1X, v1Y, v2X, V2Y); //lijn tussen twee vertecies
             }
@@ -81,8 +90,6 @@ public class GraphPanel extends JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (o instanceof GraphModel) {
-            //repaint();
-        }
+            repaint();
     }
 }

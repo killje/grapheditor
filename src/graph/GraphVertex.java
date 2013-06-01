@@ -12,6 +12,7 @@ public class GraphVertex {
 
     private String name;
     private Rectangle vertex;
+    private boolean selected = false;
 
     public GraphVertex(int x, int y, int width, int height, String name) {
         this.name = name;
@@ -35,6 +36,18 @@ public class GraphVertex {
     
     public Rectangle getVertexRectangle(){
         return this.vertex;
+    }
+    
+    public void setSelected(){
+        selected = true;
+    }
+    
+    public void resetSelected(){
+        selected = false;
+    }
+    
+    public boolean isSelected(){
+        return selected;
     }
 
     public String getVertexName() {

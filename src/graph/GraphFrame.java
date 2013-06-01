@@ -34,9 +34,9 @@ public class GraphFrame extends JFrame {
         GraphEdge e3 = new GraphEdge(v2, v3);
         graphModel.addEdge(e1);
         graphModel.addEdge(e3);
-
-        JPanel graphPanel = new GraphPanel(graphModel);
-        graphPanel.addMouseListener(new PanelAction(graphModel));
+        
+        GraphPanel graphPanel = new GraphPanel(graphModel);
+        graphPanel.addMouseListener(new PanelAction(graphPanel));
         this.add(graphPanel);
 
         setVisible(true);
