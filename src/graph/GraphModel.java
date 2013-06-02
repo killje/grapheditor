@@ -25,6 +25,7 @@ public class GraphModel extends Observable {
         GraphVertex vertex = new GraphVertex(x, y, width, height, name);
         
         this.vertices.add(vertex);
+                    this.setChanged();
         notifyObservers();
         
         return vertex;
