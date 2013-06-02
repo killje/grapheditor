@@ -12,16 +12,14 @@ import java.util.Observable;
  */
 public class SelectionController extends Observable implements MouseListener {
 
-   
     private Point diffPosition;
     private GraphVertex selectedVertex;
     private boolean hasSelected;
     private GraphModel model;
 
     public SelectionController(GraphPanel panel) {
-        
         this.addObserver(panel);
-        this.model  = panel.getModel();
+        this.model = panel.getModel();
     }
 
     @Override
@@ -68,19 +66,7 @@ public class SelectionController extends Observable implements MouseListener {
         if (model.getVertices() != null) {
             for (GraphVertex vertex : model.getVertices()) {
                 if (vertex.contains(mousePosition)) {
-                    if (selectedVertex != vertex) {
-                        hasSelected = false;
-                        boolean doContinue = true;
-                        for (GraphEdge edge : model.getEdges()) {
-                            if (edge.isIncedent(selectedVertex) && edge.isIncedent(vertex)) {
-                                doContinue = false;
-                            }
-                        }
-                        if (doContinue) {
-                            model.addEdge(selectedVertex, vertex);
-                            this.setChanged();
-                        }
-                    }
+                    addEdge(vertex, selectedVertex);
                 }
             }
         }
@@ -103,5 +89,21 @@ public class SelectionController extends Observable implements MouseListener {
     @Override
     public void mouseExited(MouseEvent me) {
         //not suported
+    }
+
+    public void addEdge(GraphVertex v1, GraphVertex v2) {
+        if (v1 != v2) {
+            hasSelected = false;
+            boolean doContinue = true;
+            for (GraphEdge edge : model.getEdges()) {
+                if (edge.isIncedent(v1) && edge.isIncedent(v2)) {
+                    doContinue = false;
+                }
+            }
+            if (doContinue) {
+                model.addEdge(v1, v2);
+                this.setChanged();
+            }
+        }
     }
 }
