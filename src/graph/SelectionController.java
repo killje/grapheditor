@@ -4,8 +4,6 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Observable;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,14 +12,16 @@ import javax.swing.JOptionPane;
  */
 public class SelectionController extends Observable implements MouseListener {
 
-    private GraphPanel panel = null;
+   
     private Point diffPosition;
     private GraphVertex selectedVertex;
     private boolean hasSelected;
+    private GraphModel model;
 
     public SelectionController(GraphPanel panel) {
-        this.panel = panel;
+        
         this.addObserver(panel);
+        this.model  = panel.getModel();
     }
 
     @Override
@@ -34,10 +34,8 @@ public class SelectionController extends Observable implements MouseListener {
         hasSelected = false;
         Point mousePosition;
         mousePosition = me.getPoint();
-        System.out.println("pressed:" + mousePosition.toString());
-        if (panel.getModel().getVertices() != null) {
-            for (GraphVertex vertex : panel.getModel().getVertices()) {
-                System.out.println("pressed:" + vertex.contains(mousePosition));
+        if (model.getVertices() != null) {
+            for (GraphVertex vertex : model.getVertices()) {
                 if (vertex.contains(mousePosition)) {
                     vertex.setSelected();
                     hasSelected = true;
@@ -55,9 +53,9 @@ public class SelectionController extends Observable implements MouseListener {
             }
         }
         if (!hasSelected) {
-            String vertexName = getNameForVertex();
+            String vertexName = model.getNameForVertex();
             if (vertexName != null) {
-                panel.getModel().addVertex(me.getX(), me.getY(), 100, 30, vertexName);
+                model.addVertex(me.getX(), me.getY(), Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, vertexName);
             }
         }
         this.notifyObservers();
@@ -67,23 +65,20 @@ public class SelectionController extends Observable implements MouseListener {
     public void mouseReleased(MouseEvent me) {
         Point mousePosition;
         mousePosition = me.getPoint();
-        if (panel.getModel().getVertices() != null) {
-            for (GraphVertex vertex : panel.getModel().getVertices()) {
-                System.out.println("pressed:" + vertex.contains(mousePosition));
+        if (model.getVertices() != null) {
+            for (GraphVertex vertex : model.getVertices()) {
                 if (vertex.contains(mousePosition)) {
                     if (selectedVertex != vertex) {
                         hasSelected = false;
                         boolean doContinue = true;
-                        for (GraphEdge edge : panel.getModel().getEdges()) {
+                        for (GraphEdge edge : model.getEdges()) {
                             if (edge.isIncedent(selectedVertex) && edge.isIncedent(vertex)) {
                                 doContinue = false;
                             }
                         }
                         if (doContinue) {
-                            GraphEdge newEdge;
-                            panel.getModel().addEdge(selectedVertex, vertex);
+                            model.addEdge(selectedVertex, vertex);
                             this.setChanged();
-                            System.out.println("create edge");
                         }
                     }
                 }
@@ -93,7 +88,6 @@ public class SelectionController extends Observable implements MouseListener {
             Point point = new Point(
                     me.getX() - (int) diffPosition.getX(),
                     me.getY() - (int) diffPosition.getY());
-            System.out.println(selectedVertex);
             selectedVertex.setPosition(point);
             this.setChanged();
 
@@ -109,11 +103,5 @@ public class SelectionController extends Observable implements MouseListener {
     @Override
     public void mouseExited(MouseEvent me) {
         //not suported
-    }
-
-    public String getNameForVertex() {
-        final JFrame parent = new JFrame();
-        String name = JOptionPane.showInputDialog(parent, "Name of vertex:", null);
-        return name;
     }
 }
