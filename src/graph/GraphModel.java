@@ -28,6 +28,15 @@ public class GraphModel extends Observable {
         return vertex;
     }
 
+    public GraphVertex addVertex() {
+        GraphVertex vertex = new GraphVertex(0, 0, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Default");
+        
+        this.vertices.add(vertex);
+        notifyObservers();
+        
+        return vertex;
+    }
+
     public GraphEdge addEdge(GraphVertex vertex1, GraphVertex vertex2) {
         GraphEdge edge = new GraphEdge(vertex1, vertex2);
         

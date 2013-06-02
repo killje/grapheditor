@@ -19,10 +19,6 @@ public class GraphVertex {
         vertex = new Rectangle(x, y, width, height);
     }
 
-    public GraphVertex() {
-        this(0, 0, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Default");
-    }
-
     public boolean contains(Point p) {
         if (vertex.contains(p)) {
             return true;
