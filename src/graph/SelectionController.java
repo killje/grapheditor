@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package graph;
 
 import java.awt.Point;
@@ -13,7 +9,8 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Patrick
+ * @author Patrick Beuks (s2288842), Floris Huizinga (s2397617) and
+ * @author Timo Smit (s2337789)
  */
 public class SelectionController extends Observable implements MouseListener {
 
@@ -60,8 +57,7 @@ public class SelectionController extends Observable implements MouseListener {
         if (!hasSelected) {
             String vertexName = getNameForVertex();
             if (vertexName != null) {
-                GraphVertex newVertex = new GraphVertex(me.getX(), me.getY(), 100, 30, vertexName);
-                panel.getModel().addVertex(newVertex);
+                panel.getModel().addVertex(me.getX(), me.getY(), 100, 30, vertexName);
             }
         }
         this.notifyObservers();
@@ -85,8 +81,7 @@ public class SelectionController extends Observable implements MouseListener {
                         }
                         if (doContinue) {
                             GraphEdge newEdge;
-                            newEdge = new GraphEdge(selectedVertex, vertex);
-                            panel.getModel().addEdge(newEdge);
+                            panel.getModel().addEdge(selectedVertex, vertex);
                             this.setChanged();
                             System.out.println("create edge");
                         }
