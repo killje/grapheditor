@@ -117,7 +117,7 @@ public class GraphFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            graphModel.addVertexWithName(/* kijken of Default werkt*/);
         }
     }
 

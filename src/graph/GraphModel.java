@@ -31,12 +31,10 @@ public class GraphModel extends Observable {
     }
 
     public GraphVertex addVertex() {
-        GraphVertex vertex = new GraphVertex(0, 0, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Default");
-        
-        this.vertices.add(vertex);
-        notifyObservers();
-        
-        return vertex;
+        return addVertex(0, 0, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Default");
+    }
+    public GraphVertex addVertexWithName() {
+        return addVertex(0, 0, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, getNameForVertex());
     }
 
     public GraphEdge addEdge(GraphVertex vertex1, GraphVertex vertex2) {
