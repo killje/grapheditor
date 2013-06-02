@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Observable;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 /**
  *
@@ -16,6 +18,7 @@ public class SelectionController extends Observable implements MouseListener {
     private GraphVertex selectedVertex;
     private boolean hasSelected;
     private GraphModel model;
+    private boolean isPopEvent=false;
 
     public SelectionController(GraphPanel panel) {
         this.addObserver(panel);
@@ -29,31 +32,38 @@ public class SelectionController extends Observable implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent me) {
-        hasSelected = false;
-        Point mousePosition;
-        mousePosition = me.getPoint();
-        if (model.getVertices() != null) {
-            for (GraphVertex vertex : model.getVertices()) {
-                if (vertex.contains(mousePosition)) {
-                    vertex.setSelected();
-                    hasSelected = true;
-                    selectedVertex = vertex;
-                    diffPosition = new Point(
-                            (int) mousePosition.getX()
-                            - (int) vertex.getVertexRectangle().getX(),
-                            (int) mousePosition.getY()
-                            - (int) vertex.getVertexRectangle().getY());
-                    this.setChanged();
-                } else {
-                    vertex.resetSelected();
-                    this.setChanged();
+        if (me.getButton() == 3) {
+            isPopEvent=true;
+            doPop(me);
+            this.setChanged();
+        } else {
+            isPopEvent=false;
+            hasSelected = false;
+            Point mousePosition;
+            mousePosition = me.getPoint();
+            if (model.getVertices() != null) {
+                for (GraphVertex vertex : model.getVertices()) {
+                    if (vertex.contains(mousePosition)) {
+                        vertex.setSelected();
+                        hasSelected = true;
+                        selectedVertex = vertex;
+                        diffPosition = new Point(
+                                (int) mousePosition.getX()
+                                - (int) vertex.getVertexRectangle().getX(),
+                                (int) mousePosition.getY()
+                                - (int) vertex.getVertexRectangle().getY());
+                        this.setChanged();
+                    } else {
+                        vertex.resetSelected();
+                        this.setChanged();
+                    }
                 }
             }
-        }
-        if (!hasSelected) {
-            String vertexName = model.getNameForVertex();
-            if (vertexName != null) {
-                model.addVertex(me.getX(), me.getY(), Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, vertexName);
+            if (!hasSelected) {
+                String vertexName = model.getNameForVertex();
+                if (vertexName != null) {
+                    model.addVertex(me.getX(), me.getY(), Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, vertexName);
+                }
             }
         }
         this.notifyObservers();
@@ -61,7 +71,7 @@ public class SelectionController extends Observable implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent me) {
-        Point mousePosition;
+        if (!isPopEvent) {Point mousePosition;
         mousePosition = me.getPoint();
         if (model.getVertices() != null) {
             for (GraphVertex vertex : model.getVertices()) {
@@ -78,6 +88,9 @@ public class SelectionController extends Observable implements MouseListener {
             this.setChanged();
 
         }
+            
+        }
+        
         this.notifyObservers();
     }
 
@@ -104,6 +117,21 @@ public class SelectionController extends Observable implements MouseListener {
                 model.addEdge(v1, v2);
                 this.setChanged();
             }
+        }
+    }
+
+    private void doPop(MouseEvent e) {
+        PopUpDemo menu = new PopUpDemo();
+        menu.show(e.getComponent(), e.getX(), e.getY());
+    }
+
+    private class PopUpDemo extends JPopupMenu {
+
+        JMenuItem anItem;
+
+        public PopUpDemo() {
+            anItem = new JMenuItem("Click Me!");
+            add(anItem);
         }
     }
 }
