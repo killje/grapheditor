@@ -25,16 +25,11 @@ public class GraphFrame extends JFrame {
 
         setJMenuBar(addMenuBar());
 
-        GraphVertex v1 = new GraphVertex(150, 50, 100, 30, "Default");
-        GraphVertex v2 = new GraphVertex(150, 250, 100, 30, "Dit is lange tekst");
-        GraphVertex v3 = new GraphVertex(/* kijken of Default werkt*/);
-        graphModel.addVertex(v1);
-        graphModel.addVertex(v2);
-        graphModel.addVertex(v3);
-        GraphEdge e1 = new GraphEdge(v1, v2);
-        GraphEdge e3 = new GraphEdge(v2, v3);
-        graphModel.addEdge(e1);
-        graphModel.addEdge(e3);
+        GraphVertex vertex1 = graphModel.addVertex(150, 50, 100, 30, "Default");
+        GraphVertex vertex2 = graphModel.addVertex(150, 250, 100, 30, "Dit is lange tekst");
+        GraphVertex vertex3 = graphModel.addVertex(/* kijken of Default werkt*/);
+        GraphEdge edge1 = graphModel.addEdge(vertex1, vertex2);
+        GraphEdge edge3 = graphModel.addEdge(vertex2, vertex3);
 
         GraphPanel graphPanel = new GraphPanel(graphModel);
         graphPanel.addMouseListener(new SelectionController(graphPanel));
