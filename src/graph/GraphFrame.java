@@ -25,8 +25,8 @@ public class GraphFrame extends JFrame {
 
         setJMenuBar(addMenuBar());
 
-        GraphVertex vertex1 = graphModel.addVertex(150, 50, 100, 30, "Default");
-        GraphVertex vertex2 = graphModel.addVertex(150, 250, 100, 30, "Dit is lange tekst");
+        GraphVertex vertex1 = graphModel.addVertex(150, 50, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Default");
+        GraphVertex vertex2 = graphModel.addVertex(150, 250, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Dit is lange tekst");
         GraphVertex vertex3 = graphModel.addVertex(/* kijken of Default werkt*/);
         GraphEdge edge1 = graphModel.addEdge(vertex1, vertex2);
         GraphEdge edge3 = graphModel.addEdge(vertex2, vertex3);

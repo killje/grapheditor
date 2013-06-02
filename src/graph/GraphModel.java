@@ -3,6 +3,8 @@ package graph;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Observable;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -64,5 +66,11 @@ public class GraphModel extends Observable {
 
     public ArrayList<GraphEdge> getEdges() {
         return this.edges;
+    }
+    
+    public String getNameForVertex() {
+        final JFrame parent = new JFrame();
+        String name = JOptionPane.showInputDialog(parent, "Name of vertex:", null);
+        return name;
     }
 }
