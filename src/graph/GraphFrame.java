@@ -117,7 +117,7 @@ public class GraphFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            graphModel.addVertexWithName(/* kijken of Default werkt*/);
+            graphModel.addVertexWithName();
         }
     }
 
