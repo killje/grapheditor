@@ -19,14 +19,22 @@ public class GraphModel extends Observable {
         this.edges = new ArrayList<>();
     }
 
-    public void addVertex(GraphVertex v) {
-        this.vertices.add(v);
+    public GraphVertex addVertex(int x, int y, int width, int height, String name) {
+        GraphVertex vertex = new GraphVertex(x, y, width, height, name);
+        
+        this.vertices.add(vertex);
         notifyObservers();
+        
+        return vertex;
     }
 
-    public void addEdge(GraphEdge e) {
-        this.edges.add(e);
+    public GraphEdge addEdge(GraphVertex vertex1, GraphVertex vertex2) {
+        GraphEdge edge = new GraphEdge(vertex1, vertex2);
+        
+        this.edges.add(edge);
         notifyObservers();
+        
+        return edge;
     }
 
     public void removeVertex(GraphVertex v) {

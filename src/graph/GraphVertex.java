@@ -20,11 +20,11 @@ public class GraphVertex {
     }
 
     public GraphVertex() {
-        this(0,0, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Default");
+        this(0, 0, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Default");
     }
 
     public boolean contains(Point p) {
-        if (vertex.contains(p)){
+        if (vertex.contains(p)) {
             return true;
         }
         return false;
@@ -33,25 +33,24 @@ public class GraphVertex {
     public void setPosition(Point p) {
         this.vertex.setLocation(p);
     }
-    
-    public Rectangle getVertexRectangle(){
+
+    public Rectangle getVertexRectangle() {
         return this.vertex;
     }
-    
-    public void setSelected(){
+
+    public void setSelected() {
         selected = true;
     }
-    
-    public void resetSelected(){
+
+    public void resetSelected() {
         selected = false;
     }
-    
-    public boolean isSelected(){
+
+    public boolean isSelected() {
         return selected;
     }
 
     public String getVertexName() {
         return this.name;
     }
-   
 }
