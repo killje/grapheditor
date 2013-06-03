@@ -41,11 +41,16 @@ public class GraphPanel extends JPanel implements Observer {
                 // de vertex x, y, width en height
                 int rectX = (int) rect.getX();
                 int rectY = (int) rect.getY();
-                int rectWidth = (int) rect.getWidth();
+                int rectWidth = (int) rect.getWidth() + 10;
                 int rectHeight = (int) rect.getHeight();
 
                 // om te bepalen hoelang een string is zodat je weet hoe je moet centreren
                 Rectangle bounds = g.getFontMetrics().getStringBounds(vertexName, g).getBounds();
+                
+                if (bounds.width > rectWidth) {
+                    rectWidth = bounds.width + 10;
+                }
+                
                 int centerWidth = rectX + (rectWidth / 2) - (bounds.width / 2);
                 int centerHeight = rectY + (rectHeight / 2) + 5;
 
