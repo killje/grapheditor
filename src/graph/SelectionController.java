@@ -80,12 +80,14 @@ public class SelectionController extends Observable implements MouseMotionListen
                 }
             }
         }
+        this.notifyObservers();
     }
 
     @Override
     public void mouseDragged(MouseEvent me) {
         if (!isPopEvent) {
             if (model.isDrawing()) {
+                System.out.println("test");
                 Point mousePosition;
                 mousePosition = me.getPoint();
                 panel.drawLine(mousePosition, selectedVertex);
