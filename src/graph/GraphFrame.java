@@ -32,7 +32,9 @@ public class GraphFrame extends JFrame {
         GraphEdge edge3 = graphModel.addEdge(vertex2, vertex3);
 
         GraphPanel graphPanel = new GraphPanel(graphModel);
-        graphPanel.addMouseListener(new SelectionController(graphPanel));
+        SelectionController selectionController = new SelectionController(graphPanel);
+        graphPanel.addMouseListener(selectionController);
+        graphPanel.addMouseMotionListener(selectionController);
         this.add(graphPanel);
 
         setVisible(true);

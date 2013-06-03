@@ -3,6 +3,7 @@ package graph;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.Observable;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -12,7 +13,7 @@ import javax.swing.JPopupMenu;
  * @author Patrick Beuks (s2288842), Floris Huizinga (s2397617) and
  * @author Timo Smit (s2337789)
  */
-public class SelectionController extends Observable implements MouseListener {
+public class SelectionController extends Observable implements MouseMotionListener, MouseListener {
 
     private Point diffPosition;
     private GraphVertex selectedVertex;
@@ -53,7 +54,6 @@ public class SelectionController extends Observable implements MouseListener {
                         - (int) vertex.getVertexRectangle().getX(),
                         (int) mousePosition.getY()
                         - (int) vertex.getVertexRectangle().getY());
-
             }
             if (!hasSelected) {
                 String vertexName = model.getNameForVertex();
@@ -68,11 +68,17 @@ public class SelectionController extends Observable implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent me) {
+        //not used
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent me) {
+
         if (!isPopEvent) {
             Point mousePosition;
             mousePosition = me.getPoint();
             GraphVertex vertex = isVertex(mousePosition);
-            if (vertex!=null) {
+            if (vertex != null) {
                 addEdge(vertex, selectedVertex);
             }
             if (hasSelected) {
@@ -81,11 +87,8 @@ public class SelectionController extends Observable implements MouseListener {
                         me.getY() - (int) diffPosition.getY());
                 selectedVertex.setPosition(point);
                 this.setChanged();
-
             }
-
         }
-
         this.notifyObservers();
     }
 
@@ -96,6 +99,11 @@ public class SelectionController extends Observable implements MouseListener {
 
     @Override
     public void mouseExited(MouseEvent me) {
+        //not suported
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent me) {
         //not suported
     }
 
