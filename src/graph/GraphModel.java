@@ -78,4 +78,10 @@ public class GraphModel extends Observable {
         final JFrame parent = new JFrame();
         JOptionPane.showMessageDialog(parent, "To create an edge drag the mouse between the two vertecies.");
     }
+    
+    public void deselectAllVertecies(){
+        for (GraphVertex vertecies : this.getVertices()) {
+            vertecies.resetSelected();
+        }
+    }
 }
