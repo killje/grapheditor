@@ -76,9 +76,9 @@ public class SelectionController extends Observable implements MouseMotionListen
                 GraphVertex vertex = isVertex(mousePosition);
                 if (vertex != null) {
                     addEdge(vertex, selectedVertex);
+                }
                     model.resetDrawing();
                     this.setChanged();
-                }
             }
         }
         
