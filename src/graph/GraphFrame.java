@@ -129,7 +129,7 @@ public class GraphFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            graphModel.addEdgeAction();
+            graphModel.setDrawing();
         }
     }
 

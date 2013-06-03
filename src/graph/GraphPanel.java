@@ -2,6 +2,7 @@ package graph;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Observable;
 import java.util.Observer;
@@ -14,7 +15,8 @@ import javax.swing.JPanel;
  */
 public class GraphPanel extends JPanel implements Observer {
 
-    GraphModel model;
+    private GraphModel model;
+    private Graphics graphics;
 
     public GraphPanel(GraphModel model) {
         this.setModel(model);
@@ -93,10 +95,16 @@ public class GraphPanel extends JPanel implements Observer {
         super.paintComponent(g);
         paintEdges(g);
         paintVertices(g);
+        this.graphics = g;
     }
 
     @Override
     public void update(Observable o, Object arg) {
         repaint();
     }
+
+    public void drawLine(Point mousePosition, GraphVertex selectedVertex) {
+        this.graphics.drawLine(selectedVertex.getVertexRectangle().x, selectedVertex.getVertexRectangle().y, mousePosition.x, mousePosition.y);
+    }
+
 }
