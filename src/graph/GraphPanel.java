@@ -41,28 +41,30 @@ public class GraphPanel extends JPanel implements Observer {
                 // de vertex x, y, width en height
                 int rectX = (int) rect.getX();
                 int rectY = (int) rect.getY();
-                int rectWidth = (int) rect.getWidth() + 10;
+                int rectWidth = (int) rect.getWidth();
                 int rectHeight = (int) rect.getHeight();
 
                 // om te bepalen hoelang een string is zodat je weet hoe je moet centreren
                 Rectangle bounds = g.getFontMetrics().getStringBounds(vertexName, g).getBounds();
-                
+
                 if (bounds.width > rectWidth) {
-                    rectWidth = bounds.width + 10;
+                    rectWidth = bounds.width; /* 10px padding */
                 }
-                
+
+                vertex.setWidth(rectWidth);
+
                 int centerWidth = rectX + (rectWidth / 2) - (bounds.width / 2);
                 int centerHeight = rectY + (rectHeight / 2) + 5;
 
                 if (vertex.isSelected()) {
                     g.setColor(Color.LIGHT_GRAY);
-                    g.fillRect(rectX, rectY, rectWidth, rectHeight); //vertex binnenkant tekenen
                 } else {
                     g.setColor(Color.WHITE);
-                    g.fillRect(rectX, rectY, rectWidth, rectHeight); //vertex binnenkant tekenen
                 }
+
+                g.fillRect(rectX, rectY, rectWidth + 10, rectHeight); //vertex binnenkant tekenen
                 g.setColor(Color.GRAY);
-                g.drawRect(rectX, rectY, rectWidth, rectHeight); // vertex border tekenen
+                g.drawRect(rectX, rectY, rectWidth + 10, rectHeight); // vertex border tekenen
                 g.setColor(Color.BLACK);
                 g.drawString(vertexName, centerWidth, centerHeight); // vertex naam neerzetten
             }

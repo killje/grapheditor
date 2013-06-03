@@ -29,7 +29,11 @@ public class GraphVertex {
     public void setPosition(Point p) {
         this.vertex.setLocation(p);
     }
-
+    
+    public void setWidth(int width) {
+        this.vertex.setSize(width, (int) this.vertex.getHeight());
+    }
+    
     public Rectangle getVertexRectangle() {
         return this.vertex;
     }
