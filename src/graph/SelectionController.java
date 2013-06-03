@@ -1,10 +1,14 @@
 package graph;
 
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.Observable;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -21,6 +25,7 @@ public class SelectionController extends Observable implements MouseMotionListen
     private GraphModel model;
     private GraphPanel panel;
     private boolean isPopEvent = false;
+    private boolean manualAdd = false;
 
     public SelectionController(GraphPanel panel) {
         this.addObserver(panel);
@@ -30,6 +35,24 @@ public class SelectionController extends Observable implements MouseMotionListen
 
     @Override
     public void mouseClicked(MouseEvent me) {
+        if (manualAdd) {
+            if (!isPopEvent) {
+                if (model.isDrawing()) {
+                    Point mousePosition;
+                    mousePosition = me.getPoint();
+                    GraphVertex vertex = isVertex(mousePosition);
+                    if (vertex != null) {
+                        System.out.println("test2" + vertex + selectedVertex);
+                        addEdge(vertex, selectedVertex);
+                    }
+                    model.resetDrawing();
+                    this.setChanged();
+                }
+            }
+
+            this.notifyObservers();
+        } else {
+        }
         mousePressed(me);
     }
 
@@ -46,7 +69,7 @@ public class SelectionController extends Observable implements MouseMotionListen
             mousePosition = me.getPoint();
             GraphVertex vertex = isVertex(mousePosition);
             model.deselectAllVertecies();
-            if (vertex != null) {
+            if (vertex != null && !manualAdd) {
                 vertex.setSelected();
                 hasSelected = true;
                 selectedVertex = vertex;
@@ -56,7 +79,7 @@ public class SelectionController extends Observable implements MouseMotionListen
                         (int) mousePosition.getY()
                         - (int) vertex.getVertexRectangle().getY());
             }
-            if (!hasSelected) {
+            if (!hasSelected && !manualAdd) {
                 String vertexName = model.getNameForVertex();
                 if (vertexName != null) {
                     model.addVertex(me.getX(), me.getY(), Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, vertexName);
@@ -69,26 +92,13 @@ public class SelectionController extends Observable implements MouseMotionListen
 
     @Override
     public void mouseReleased(MouseEvent me) {
-        if (!isPopEvent) {
-            if (model.isDrawing()) {
-                Point mousePosition;
-                mousePosition = me.getPoint();
-                GraphVertex vertex = isVertex(mousePosition);
-                if (vertex != null) {
-                    addEdge(vertex, selectedVertex);
-                }
-                model.resetDrawing();
-                this.setChanged();
-            }
-        }
-
-        this.notifyObservers();
+        //not implemented
     }
 
     @Override
     public void mouseDragged(MouseEvent me) {
         if (!isPopEvent) {
-            if (model.isDrawing()) {
+            if (model.isDrawing() && !manualAdd) {
                 Point mousePosition;
                 mousePosition = me.getPoint();
                 panel.drawLine(mousePosition, selectedVertex);
@@ -119,7 +129,15 @@ public class SelectionController extends Observable implements MouseMotionListen
 
     @Override
     public void mouseMoved(MouseEvent me) {
-        //not suported
+        if (!isPopEvent) {
+            if (model.isDrawing() && manualAdd) {
+                Point mousePosition;
+                mousePosition = me.getPoint();
+                panel.drawLine(mousePosition, selectedVertex);
+                this.setChanged();
+            }
+        }
+        this.notifyObservers();
     }
 
     public void addEdge(GraphVertex v1, GraphVertex v2) {
@@ -139,17 +157,41 @@ public class SelectionController extends Observable implements MouseMotionListen
     }
 
     private void doPop(MouseEvent e) {
-        PopUpDemo menu = new PopUpDemo();
-        menu.show(e.getComponent(), e.getX(), e.getY());
+        if (isVertex(e.getPoint()) != null) {
+            PopUpDemo menu = new PopUpDemo(e.getPoint());
+            menu.show(e.getComponent(), e.getX(), e.getY());
+
+        }
     }
 
     private class PopUpDemo extends JPopupMenu {
 
         JMenuItem anItem;
 
-        public PopUpDemo() {
-            anItem = new JMenuItem("Click Me!");
+        public PopUpDemo(Point p) {
+            anItem = new JMenuItem("add Edge");
+            anItem.addActionListener(new addEdge(p));
             add(anItem);
+        }
+    }
+
+    private class addEdge implements ActionListener {
+
+        Point point;
+
+        public addEdge(Point p) {
+            point = p;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            selectedVertex = isVertex(point);
+            System.out.println("selectedVertex = " + selectedVertex);
+            model.deselectAllVertecies();
+            selectedVertex.setSelected();
+            manualAdd = true;
+            isPopEvent = false;
+            model.setDrawing();
         }
     }
 
