@@ -18,7 +18,8 @@ public class SelectionController extends Observable implements MouseListener {
     private GraphVertex selectedVertex;
     private boolean hasSelected;
     private GraphModel model;
-    private boolean isPopEvent=false;
+    private boolean isPopEvent = false;
+    private boolean drawingEdge = false;
 
     public SelectionController(GraphPanel panel) {
         this.addObserver(panel);
@@ -33,31 +34,26 @@ public class SelectionController extends Observable implements MouseListener {
     @Override
     public void mousePressed(MouseEvent me) {
         if (me.getButton() == 3) {
-            isPopEvent=true;
+            isPopEvent = true;
             doPop(me);
             this.setChanged();
         } else {
-            isPopEvent=false;
+            isPopEvent = false;
             hasSelected = false;
             Point mousePosition;
             mousePosition = me.getPoint();
-            if (model.getVertices() != null) {
-                for (GraphVertex vertex : model.getVertices()) {
-                    if (vertex.contains(mousePosition)) {
-                        vertex.setSelected();
-                        hasSelected = true;
-                        selectedVertex = vertex;
-                        diffPosition = new Point(
-                                (int) mousePosition.getX()
-                                - (int) vertex.getVertexRectangle().getX(),
-                                (int) mousePosition.getY()
-                                - (int) vertex.getVertexRectangle().getY());
-                        this.setChanged();
-                    } else {
-                        vertex.resetSelected();
-                        this.setChanged();
-                    }
-                }
+            GraphVertex vertex = isVertex(mousePosition);
+            model.deselectAllVertecies();
+            if (vertex != null) {
+                vertex.setSelected();
+                hasSelected = true;
+                selectedVertex = vertex;
+                diffPosition = new Point(
+                        (int) mousePosition.getX()
+                        - (int) vertex.getVertexRectangle().getX(),
+                        (int) mousePosition.getY()
+                        - (int) vertex.getVertexRectangle().getY());
+
             }
             if (!hasSelected) {
                 String vertexName = model.getNameForVertex();
@@ -66,31 +62,30 @@ public class SelectionController extends Observable implements MouseListener {
                 }
             }
         }
+        this.setChanged();
         this.notifyObservers();
     }
 
     @Override
     public void mouseReleased(MouseEvent me) {
-        if (!isPopEvent) {Point mousePosition;
-        mousePosition = me.getPoint();
-        if (model.getVertices() != null) {
-            for (GraphVertex vertex : model.getVertices()) {
-                if (vertex.contains(mousePosition)) {
-                    addEdge(vertex, selectedVertex);
-                }
+        if (!isPopEvent) {
+            Point mousePosition;
+            mousePosition = me.getPoint();
+            GraphVertex vertex = isVertex(mousePosition);
+            if (vertex!=null) {
+                addEdge(vertex, selectedVertex);
             }
-        }
-        if (hasSelected) {
-            Point point = new Point(
-                    me.getX() - (int) diffPosition.getX(),
-                    me.getY() - (int) diffPosition.getY());
-            selectedVertex.setPosition(point);
-            this.setChanged();
+            if (hasSelected) {
+                Point point = new Point(
+                        me.getX() - (int) diffPosition.getX(),
+                        me.getY() - (int) diffPosition.getY());
+                selectedVertex.setPosition(point);
+                this.setChanged();
+
+            }
 
         }
-            
-        }
-        
+
         this.notifyObservers();
     }
 
@@ -133,5 +128,17 @@ public class SelectionController extends Observable implements MouseListener {
             anItem = new JMenuItem("Click Me!");
             add(anItem);
         }
+    }
+
+    private GraphVertex isVertex(Point p) {
+        GraphVertex vertex = null;
+        if (model.getVertices() != null) {
+            for (GraphVertex vertecies : model.getVertices()) {
+                if (vertecies.contains(p)) {
+                    vertex = vertecies;
+                }
+            }
+        }
+        return vertex;
     }
 }
