@@ -48,12 +48,12 @@ public class GraphPanel extends JPanel implements Observer {
                 Rectangle bounds = g.getFontMetrics().getStringBounds(vertexName, g).getBounds();
 
                 if (bounds.width > rectWidth) {
-                    rectWidth = bounds.width; /* 10px padding */
+                    rectWidth = bounds.width;
+
+                    vertex.setWidth(rectWidth);
                 }
 
-                vertex.setWidth(rectWidth);
-
-                int centerWidth = rectX + (rectWidth / 2) - (bounds.width / 2);
+                int centerWidth = rectX + ((rectWidth + 10) / 2) - (bounds.width / 2);
                 int centerHeight = rectY + (rectHeight / 2) + 5;
 
                 if (vertex.isSelected()) {
