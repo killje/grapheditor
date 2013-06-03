@@ -18,7 +18,6 @@ public class GraphFrame extends JFrame {
     }
 
     private void init() {
-
         setTitle("Graph editor");
         setSize(Graph.FRAME_WIDTH, Graph.FRAME_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -57,19 +56,22 @@ public class GraphFrame extends JFrame {
         JMenu menuWindow = addMenu("Window", KeyEvent.VK_W);
         menuWindow.add(addMenuItem("Hide bar", KeyEvent.VK_H, new HideAction()));
         menuBar.add(menuWindow);
+        
         return menuBar;
     }
 
     private JMenu addMenu(String name, int shortKey) {
         JMenu menu = new JMenu(name);
         menu.setMnemonic(shortKey);
+        
         return menu;
     }
 
-    private JMenuItem addMenuItem(String name, int shortKey, AbstractAction listner) {
+    private JMenuItem addMenuItem(String name, int shortKey, AbstractAction actionListener) {
         JMenuItem menuItem = new JMenuItem(name);
-        menuItem.addActionListener(listner);
+        menuItem.addActionListener(actionListener);
         menuItem.setMnemonic(shortKey);
+        
         return menuItem;
     }
 
