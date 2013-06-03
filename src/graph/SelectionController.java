@@ -77,11 +77,11 @@ public class SelectionController extends Observable implements MouseMotionListen
                 if (vertex != null) {
                     addEdge(vertex, selectedVertex);
                 }
-                    model.resetDrawing();
-                    this.setChanged();
+                model.resetDrawing();
+                this.setChanged();
             }
         }
-        
+
         this.notifyObservers();
     }
 
