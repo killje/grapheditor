@@ -52,12 +52,11 @@ public class GraphPanel extends JPanel implements Observer {
                 Rectangle bounds = g.getFontMetrics().getStringBounds(vertexName, g).getBounds();
 
                 if (bounds.width > rectWidth) {
-                    rectWidth = bounds.width;
-
-                    vertex.setWidth(rectWidth);
+                    vertex.setWidth(bounds.width);
+                    rectWidth = (int) rect.getWidth();
                 }
 
-                int centerWidth = rectX + ((rectWidth + 10) / 2) - (bounds.width / 2);
+                int centerWidth = rectX + (rectWidth / 2) - (bounds.width / 2);
                 int centerHeight = rectY + (rectHeight / 2) + 5;
 
                 if (vertex.isSelected()) {
@@ -66,9 +65,9 @@ public class GraphPanel extends JPanel implements Observer {
                     g.setColor(Color.WHITE);
                 }
 
-                g.fillRect(rectX, rectY, rectWidth + 10, rectHeight); //vertex binnenkant tekenen
+                g.fillRect(rectX, rectY, rectWidth, rectHeight); //vertex binnenkant tekenen
                 g.setColor(Color.GRAY);
-                g.drawRect(rectX, rectY, rectWidth + 10, rectHeight); // vertex border tekenen
+                g.drawRect(rectX, rectY, rectWidth, rectHeight); // vertex border tekenen
                 g.setColor(Color.BLACK);
                 g.drawString(vertexName, centerWidth, centerHeight); // vertex naam neerzetten
             }
