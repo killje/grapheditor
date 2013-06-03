@@ -16,7 +16,7 @@ public class GraphVertex {
 
     public GraphVertex(int x, int y, int width, int height, String name) {
         this.name = name;
-        vertex = new Rectangle(x, y, width, height);
+        vertex = new Rectangle(x, y, width + 10, height);
     }
 
     public boolean contains(Point p) {
@@ -31,7 +31,7 @@ public class GraphVertex {
     }
     
     public void setWidth(int width) {
-        this.vertex.setSize(width, (int) this.vertex.getHeight());
+        this.vertex.setSize(width + 10, (int) this.vertex.getHeight());
     }
     
     public Rectangle getVertexRectangle() {
