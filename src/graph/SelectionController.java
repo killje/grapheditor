@@ -73,7 +73,6 @@ public class SelectionController extends Observable implements MouseMotionListen
 
     @Override
     public void mouseDragged(MouseEvent me) {
-
         if (!isPopEvent) {
             Point mousePosition;
             mousePosition = me.getPoint();
