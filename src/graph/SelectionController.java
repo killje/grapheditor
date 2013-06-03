@@ -19,12 +19,13 @@ public class SelectionController extends Observable implements MouseMotionListen
     private GraphVertex selectedVertex;
     private boolean hasSelected;
     private GraphModel model;
+    private GraphPanel panel;
     private boolean isPopEvent = false;
-    private boolean drawingEdge = false;
 
     public SelectionController(GraphPanel panel) {
         this.addObserver(panel);
         this.model = panel.getModel();
+        this.panel = panel;
     }
 
     @Override
@@ -68,24 +69,36 @@ public class SelectionController extends Observable implements MouseMotionListen
 
     @Override
     public void mouseReleased(MouseEvent me) {
-        //not used
+        if (!isPopEvent) {
+            if (model.isDrawing()) {
+                Point mousePosition;
+                mousePosition = me.getPoint();
+                GraphVertex vertex = isVertex(mousePosition);
+                if (vertex != null) {
+                    addEdge(vertex, selectedVertex);
+                    this.setChanged();
+                }
+            }
+        }
     }
 
     @Override
     public void mouseDragged(MouseEvent me) {
         if (!isPopEvent) {
-            Point mousePosition;
-            mousePosition = me.getPoint();
-            GraphVertex vertex = isVertex(mousePosition);
-            if (vertex != null) {
-                addEdge(vertex, selectedVertex);
-            }
-            if (hasSelected) {
-                Point point = new Point(
-                        me.getX() - (int) diffPosition.getX(),
-                        me.getY() - (int) diffPosition.getY());
-                selectedVertex.setPosition(point);
+            if (model.isDrawing()) {
+                Point mousePosition;
+                mousePosition = me.getPoint();
+                panel.drawLine(mousePosition, selectedVertex);
                 this.setChanged();
+            } else {
+
+                if (hasSelected) {
+                    Point point = new Point(
+                            me.getX() - (int) diffPosition.getX(),
+                            me.getY() - (int) diffPosition.getY());
+                    selectedVertex.setPosition(point);
+                    this.setChanged();
+                }
             }
         }
         this.notifyObservers();
