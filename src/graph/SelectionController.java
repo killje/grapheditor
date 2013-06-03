@@ -76,10 +76,12 @@ public class SelectionController extends Observable implements MouseMotionListen
                 GraphVertex vertex = isVertex(mousePosition);
                 if (vertex != null) {
                     addEdge(vertex, selectedVertex);
+                    model.resetDrawing();
                     this.setChanged();
                 }
             }
         }
+        
         this.notifyObservers();
     }
 
@@ -87,7 +89,6 @@ public class SelectionController extends Observable implements MouseMotionListen
     public void mouseDragged(MouseEvent me) {
         if (!isPopEvent) {
             if (model.isDrawing()) {
-                System.out.println("test");
                 Point mousePosition;
                 mousePosition = me.getPoint();
                 panel.drawLine(mousePosition, selectedVertex);
