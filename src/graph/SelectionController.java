@@ -7,8 +7,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.Observable;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -37,15 +35,15 @@ public class SelectionController extends Observable implements MouseMotionListen
     public void mouseClicked(MouseEvent me) {
         if (manualAdd) {
             if (!isPopEvent) {
-                if (model.isDrawing()) {
+                if (panel.isDrawing()) {
                     Point mousePosition;
                     mousePosition = me.getPoint();
                     GraphVertex vertex = isVertex(mousePosition);
                     if (vertex != null) {
-                        System.out.println("test2" + vertex + selectedVertex);
                         addEdge(vertex, selectedVertex);
                     }
-                    model.resetDrawing();
+                    panel.resetDrawing();
+                    manualAdd = false;
                     this.setChanged();
                 }
             }
@@ -98,7 +96,7 @@ public class SelectionController extends Observable implements MouseMotionListen
     @Override
     public void mouseDragged(MouseEvent me) {
         if (!isPopEvent) {
-            if (model.isDrawing() && !manualAdd) {
+            if (panel.isDrawing() && !manualAdd) {
                 Point mousePosition;
                 mousePosition = me.getPoint();
                 panel.drawLine(mousePosition, selectedVertex);
@@ -130,7 +128,7 @@ public class SelectionController extends Observable implements MouseMotionListen
     @Override
     public void mouseMoved(MouseEvent me) {
         if (!isPopEvent) {
-            if (model.isDrawing() && manualAdd) {
+            if (panel.isDrawing() && manualAdd) {
                 Point mousePosition;
                 mousePosition = me.getPoint();
                 panel.drawLine(mousePosition, selectedVertex);
@@ -186,12 +184,11 @@ public class SelectionController extends Observable implements MouseMotionListen
         @Override
         public void actionPerformed(ActionEvent ae) {
             selectedVertex = isVertex(point);
-            System.out.println("selectedVertex = " + selectedVertex);
             model.deselectAllVertecies();
             selectedVertex.setSelected();
             manualAdd = true;
             isPopEvent = false;
-            model.setDrawing();
+            panel.setDrawing();
         }
     }
 

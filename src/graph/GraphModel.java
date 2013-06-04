@@ -15,7 +15,6 @@ public class GraphModel extends Observable {
 
     private ArrayList<GraphVertex> vertices = new ArrayList<>();
     private ArrayList<GraphEdge> edges = new ArrayList<>();
-    private boolean drawingEdge = false;
 
     public void GraphModel() {
         this.vertices = new ArrayList<>();
@@ -84,15 +83,5 @@ public class GraphModel extends Observable {
         for (GraphVertex vertecies : this.getVertices()) {
             vertecies.resetSelected();
         }
-    }
-    
-    public boolean isDrawing(){
-        return drawingEdge;
-    }
-    public void resetDrawing(){
-        drawingEdge = false;
-    }
-    public void setDrawing(){
-        drawingEdge = true;
     }
 }

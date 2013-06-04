@@ -12,7 +12,7 @@ import javax.swing.*;
 public class GraphFrame extends JFrame {
 
     private GraphModel graphModel = new GraphModel();
-
+    private GraphPanel graphPanel;
     public GraphFrame() {
         init();
     }
@@ -27,10 +27,10 @@ public class GraphFrame extends JFrame {
         GraphVertex vertex1 = graphModel.addVertex(150, 50, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Default");
         GraphVertex vertex2 = graphModel.addVertex(150, 250, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Dit is lange tekst");
         GraphVertex vertex3 = graphModel.addVertex(/* kijken of Default werkt*/);
-        GraphEdge edge1 = graphModel.addEdge(vertex1, vertex2);
-        GraphEdge edge3 = graphModel.addEdge(vertex2, vertex3);
+        graphModel.addEdge(vertex1, vertex2);
+        graphModel.addEdge(vertex2, vertex3);
 
-        GraphPanel graphPanel = new GraphPanel(graphModel);
+        graphPanel = new GraphPanel(graphModel);
         SelectionController selectionController = new SelectionController(graphPanel);
         graphPanel.addMouseListener(selectionController);
         graphPanel.addMouseMotionListener(selectionController);
@@ -129,7 +129,7 @@ public class GraphFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            graphModel.setDrawing();
+            graphPanel.setDrawing();
         }
     }
 

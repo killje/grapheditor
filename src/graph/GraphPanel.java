@@ -16,9 +16,9 @@ import javax.swing.JPanel;
 public class GraphPanel extends JPanel implements Observer {
 
     private GraphModel model;
-    private Graphics graphics;
     private Point mousePoint = null;
     private GraphVertex drawVertex = null;
+    private boolean drawingEdge = false;
 
     public GraphPanel(GraphModel model) {
         this.setModel(model);
@@ -95,7 +95,7 @@ public class GraphPanel extends JPanel implements Observer {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (model.isDrawing()&&this.drawVertex!=null) {
+        if (this.isDrawing()&&this.drawVertex!=null) {
             Rectangle vertexRectangle = this.drawVertex.getVertexRectangle();
             Point point = this.mousePoint;
             g.drawLine(vertexRectangle.x+(vertexRectangle.width/2), vertexRectangle.y+(vertexRectangle.height/2), point.x, point.y);
@@ -114,5 +114,17 @@ public class GraphPanel extends JPanel implements Observer {
         this.drawVertex = selectedVertex;
         this.mousePoint = mousePosition;
     }
+    
+    
+    public boolean isDrawing(){
+        return drawingEdge;
+    }
+    public void resetDrawing(){
+        drawingEdge = false;
+    }
+    public void setDrawing(){
+        drawingEdge = true;
+    }
+    
 
 }
