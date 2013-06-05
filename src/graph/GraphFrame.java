@@ -30,7 +30,6 @@ public class GraphFrame extends JFrame {
     public GraphFrame() {
         createFrame();
         init(testModel());
-        System.out.println(this.getFont());
     }
 
     private void createFrame() {

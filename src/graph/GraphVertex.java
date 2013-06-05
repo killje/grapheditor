@@ -1,7 +1,6 @@
 package graph;
 
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.font.FontRenderContext;
@@ -39,19 +38,19 @@ public class GraphVertex implements Serializable {
     public void setWidth(int width) {
         this.vertex.setSize(width + 20, (int) this.vertex.getHeight());
     }
-    
-    public void recalculateWidth(){
+
+    public void recalculateWidth() {
         AffineTransform affinetransform = new AffineTransform();
         FontRenderContext frc = new FontRenderContext(affinetransform, true, true);
         Font font = new Font("Dialog", Font.PLAIN, 12);
-        int textwidth = (int)(font.getStringBounds(name, frc).getWidth());
-        if (textwidth>Graph.STANDARD_VERTEX_WIDTH) {
+        int textwidth = (int) (font.getStringBounds(name, frc).getWidth());
+        if (textwidth > Graph.STANDARD_VERTEX_WIDTH) {
             this.setWidth(textwidth);
-        }else{
+        } else {
             this.setWidth(Graph.STANDARD_VERTEX_WIDTH);
         }
     }
-    
+
     public Rectangle getVertexRectangle() {
         return this.vertex;
     }
