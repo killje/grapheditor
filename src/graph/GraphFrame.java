@@ -30,6 +30,7 @@ public class GraphFrame extends JFrame {
     public GraphFrame() {
         createFrame();
         init(testModel());
+        System.out.println(this.getFont());
     }
 
     private void createFrame() {
@@ -65,7 +66,6 @@ public class GraphFrame extends JFrame {
     }
 
     public void store(File file) {
-
         try {
             if (!file.exists()) {
                 file.getParentFile().mkdirs();

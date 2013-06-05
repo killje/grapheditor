@@ -24,7 +24,7 @@ public class GraphModel extends Observable implements Serializable {
 
     public GraphVertex addVertex(int x, int y, int width, int height, String name) {
         GraphVertex vertex = new GraphVertex(x, y, width, height, name);
-
+        
         this.vertices.add(vertex);
         this.setChanged();
         notifyObservers();
@@ -38,6 +38,7 @@ public class GraphModel extends Observable implements Serializable {
 
     public GraphVertex addVertexWithName() {
         return addVertex(0, 0, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, getNameForVertex());
+        
     }
 
     public GraphEdge addEdge(GraphVertex vertex1, GraphVertex vertex2) {
