@@ -75,7 +75,6 @@ public class GraphFrame extends JFrame {
                     return;
                 }
             }
-            System.out.println("rest");
             FileOutputStream fos = new FileOutputStream(file);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
 
