@@ -66,7 +66,7 @@ public class SelectionController extends Observable implements MouseMotionListen
             Point mousePosition;
             mousePosition = me.getPoint();
             GraphVertex vertex = isVertex(mousePosition);
-            model.deselectAllVertecies();
+            model.deselectAllVertices();
             if (vertex != null && !manualAdd) {
                 vertex.setSelected();
                 hasSelected = true;
@@ -184,7 +184,7 @@ public class SelectionController extends Observable implements MouseMotionListen
         @Override
         public void actionPerformed(ActionEvent ae) {
             selectedVertex = isVertex(point);
-            model.deselectAllVertecies();
+            model.deselectAllVertices();
             selectedVertex.setSelected();
             manualAdd = true;
             isPopEvent = false;

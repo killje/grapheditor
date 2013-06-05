@@ -80,7 +80,7 @@ public class GraphModel extends Observable implements Serializable {
         JOptionPane.showMessageDialog(parent, "To create an edge drag the mouse between the two vertecies.");
     }
     
-    public void deselectAllVertecies(){
+    public void deselectAllVertices(){
         for (GraphVertex vertecies : this.getVertices()) {
             vertecies.resetSelected();
         }
