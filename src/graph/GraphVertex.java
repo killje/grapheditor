@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author Patrick Beuks (s2288842), Floris Huizinga (s2397617) and
  * @author Timo Smit (s2337789)
  */
-public class GraphVertex implements Serializable{
+public class GraphVertex implements Serializable {
 
     private String name;
     private Rectangle vertex;
@@ -30,11 +30,11 @@ public class GraphVertex implements Serializable{
     public void setPosition(Point p) {
         this.vertex.setLocation(p);
     }
-    
+
     public void setWidth(int width) {
         this.vertex.setSize(width + 10, (int) this.vertex.getHeight());
     }
-    
+
     public Rectangle getVertexRectangle() {
         return this.vertex;
     }
@@ -53,5 +53,9 @@ public class GraphVertex implements Serializable{
 
     public String getVertexName() {
         return this.name;
+    }
+
+    public void setVertexName(String name) {
+        this.name = name;
     }
 }
