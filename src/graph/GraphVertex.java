@@ -2,13 +2,14 @@ package graph;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.io.Serializable;
 
 /**
  *
  * @author Patrick Beuks (s2288842), Floris Huizinga (s2397617) and
  * @author Timo Smit (s2337789)
  */
-public class GraphVertex {
+public class GraphVertex implements Serializable{
 
     private String name;
     private Rectangle vertex;

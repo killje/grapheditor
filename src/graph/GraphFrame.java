@@ -2,6 +2,14 @@ package graph;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import javax.swing.*;
 
 /**
@@ -13,6 +21,7 @@ public class GraphFrame extends JFrame {
 
     private GraphModel graphModel = new GraphModel();
     private GraphPanel graphPanel;
+
     public GraphFrame() {
         init();
     }
@@ -39,6 +48,54 @@ public class GraphFrame extends JFrame {
         setVisible(true);
     }
 
+    public void store(File file) {
+
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+            oos.writeObject(this.graphModel);
+
+            oos.close();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("The desired file was not found.");
+        } catch (NotSerializableException e) {
+            System.err.println("The saved object is not serializable at: " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("An error with the I/O was reported, program closing.");
+            System.exit(-1);
+        }
+
+    }
+
+    public void read(File file) {
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+
+            Object object = ois.readObject();
+            if (!(object instanceof GraphModel)) {
+                throw new Exception("An illegal class type was found (" + object.getClass().getName() + ")");
+            }
+
+            GraphModel model = (GraphModel) object;
+            graphPanel.setModel(model);
+            graphPanel.repaint();
+
+            ois.close();
+            fis.close();
+        } catch (ClassNotFoundException e) {
+            System.err.println("The file could not be read.");
+        } catch (FileNotFoundException e) {
+            System.err.println("The desired file was not found.");
+        } catch (IOException e) {
+            System.err.println("An error with the I/O was reported, program closing.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
     private JMenuBar addMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
@@ -58,14 +115,14 @@ public class GraphFrame extends JFrame {
         JMenu menuWindow = addMenu("Window", KeyEvent.VK_W);
         menuWindow.add(addMenuItem("Hide bar", KeyEvent.VK_H, new HideAction()));
         menuBar.add(menuWindow);
-        
+
         return menuBar;
     }
 
     private JMenu addMenu(String name, int shortKey) {
         JMenu menu = new JMenu(name);
         menu.setMnemonic(shortKey);
-        
+
         return menu;
     }
 
@@ -73,7 +130,7 @@ public class GraphFrame extends JFrame {
         JMenuItem menuItem = new JMenuItem(name);
         menuItem.addActionListener(actionListener);
         menuItem.setMnemonic(shortKey);
-        
+
         return menuItem;
     }
 
@@ -81,7 +138,9 @@ public class GraphFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            final JFrame parent = new JFrame();
+            String path = JOptionPane.showInputDialog(parent, "Path Name:", null);
+            store(new File(path));
         }
     }
 
@@ -89,7 +148,10 @@ public class GraphFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            final JFrame parent = new JFrame();
+            String path = JOptionPane.showInputDialog(parent, "Path Name:", null);
+            path = path.replace("/", "//");
+            read(new File(path));
         }
     }
 

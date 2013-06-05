@@ -1,5 +1,6 @@
 package graph;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Observable;
@@ -11,7 +12,7 @@ import javax.swing.JOptionPane;
  * @author Patrick Beuks (s2288842), Floris Huizinga (s2397617) and
  * @author Timo Smit (s2337789)
  */
-public class GraphModel extends Observable {
+public class GraphModel extends Observable implements Serializable {
 
     private ArrayList<GraphVertex> vertices = new ArrayList<>();
     private ArrayList<GraphEdge> edges = new ArrayList<>();
