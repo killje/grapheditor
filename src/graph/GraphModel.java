@@ -38,6 +38,7 @@ public class GraphModel extends Observable implements Serializable {
 
     public GraphVertex addVertexWithName() {
         return addVertex(0, 0, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, getNameForVertex());
+
     }
 
     public GraphEdge addEdge(GraphVertex vertex1, GraphVertex vertex2) {
@@ -74,13 +75,13 @@ public class GraphModel extends Observable implements Serializable {
         String name = JOptionPane.showInputDialog(parent, "Name of vertex:", null);
         return name;
     }
-    
-    public void addEdgeAction(){
+
+    public void addEdgeAction() {
         final JFrame parent = new JFrame();
         JOptionPane.showMessageDialog(parent, "To create an edge drag the mouse between the two vertecies.");
     }
-    
-    public void deselectAllVertecies(){
+
+    public void deselectAllVertices() {
         for (GraphVertex vertecies : this.getVertices()) {
             vertecies.resetSelected();
         }

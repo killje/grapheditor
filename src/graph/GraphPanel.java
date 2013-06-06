@@ -22,6 +22,9 @@ public class GraphPanel extends JPanel implements Observer {
 
     public GraphPanel(GraphModel model) {
         this.setModel(model);
+        SelectionController selectionController = new SelectionController(this);
+        this.addMouseListener(selectionController);
+        this.addMouseMotionListener(selectionController);
     }
 
     public final void setModel(GraphModel model) {
@@ -50,11 +53,6 @@ public class GraphPanel extends JPanel implements Observer {
 
                 // om te bepalen hoelang een string is zodat je weet hoe je moet centreren
                 Rectangle bounds = g.getFontMetrics().getStringBounds(vertexName, g).getBounds();
-
-                if (bounds.width > rectWidth) {
-                    vertex.setWidth(bounds.width);
-                    rectWidth = (int) rect.getWidth();
-                }
 
                 int centerWidth = rectX + (rectWidth / 2) - (bounds.width / 2);
                 int centerHeight = rectY + (rectHeight / 2) + 5;
@@ -95,14 +93,14 @@ public class GraphPanel extends JPanel implements Observer {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (this.isDrawing()&&this.drawVertex!=null) {
+        if (this.isDrawing() && this.drawVertex != null) {
             Rectangle vertexRectangle = this.drawVertex.getVertexRectangle();
             Point point = this.mousePoint;
-            g.drawLine(vertexRectangle.x+(vertexRectangle.width/2), vertexRectangle.y+(vertexRectangle.height/2), point.x, point.y);
+            g.drawLine(vertexRectangle.x + (vertexRectangle.width / 2), vertexRectangle.y + (vertexRectangle.height / 2), point.x, point.y);
         }
         paintEdges(g);
         paintVertices(g);
-        
+
     }
 
     @Override
@@ -114,17 +112,16 @@ public class GraphPanel extends JPanel implements Observer {
         this.drawVertex = selectedVertex;
         this.mousePoint = mousePosition;
     }
-    
-    
-    public boolean isDrawing(){
+
+    public boolean isDrawing() {
         return drawingEdge;
     }
-    public void resetDrawing(){
+
+    public void resetDrawing() {
         drawingEdge = false;
     }
-    public void setDrawing(){
+
+    public void setDrawing() {
         drawingEdge = true;
     }
-    
-
 }

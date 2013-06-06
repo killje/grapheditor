@@ -8,6 +8,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.Observable;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 /**
@@ -66,7 +67,7 @@ public class SelectionController extends Observable implements MouseMotionListen
             Point mousePosition;
             mousePosition = me.getPoint();
             GraphVertex vertex = isVertex(mousePosition);
-            model.deselectAllVertecies();
+            model.deselectAllVertices();
             if (vertex != null && !manualAdd) {
                 vertex.setSelected();
                 hasSelected = true;
@@ -155,21 +156,26 @@ public class SelectionController extends Observable implements MouseMotionListen
     }
 
     private void doPop(MouseEvent e) {
-        if (isVertex(e.getPoint()) != null) {
-            PopUpDemo menu = new PopUpDemo(e.getPoint());
+        GraphVertex vertex = isVertex(e.getPoint());
+        if (vertex != null) {
+            PopUpDemo menu = new PopUpDemo(e.getPoint(), vertex);
             menu.show(e.getComponent(), e.getX(), e.getY());
-
         }
     }
 
     private class PopUpDemo extends JPopupMenu {
 
-        JMenuItem anItem;
+        JMenuItem addEdge;
+        JMenuItem rename;
 
-        public PopUpDemo(Point p) {
-            anItem = new JMenuItem("add Edge");
-            anItem.addActionListener(new addEdge(p));
-            add(anItem);
+        public PopUpDemo(Point p, GraphVertex vertex) {
+            addEdge = new JMenuItem("add Edge");
+            addEdge.addActionListener(new addEdge(p));
+            add(addEdge);
+
+            rename = new JMenuItem("rename");
+            rename.addActionListener(new rename(vertex));
+            add(rename);
         }
     }
 
@@ -184,11 +190,30 @@ public class SelectionController extends Observable implements MouseMotionListen
         @Override
         public void actionPerformed(ActionEvent ae) {
             selectedVertex = isVertex(point);
-            model.deselectAllVertecies();
+            model.deselectAllVertices();
             selectedVertex.setSelected();
             manualAdd = true;
             isPopEvent = false;
             panel.setDrawing();
+        }
+    }
+
+    private class rename implements ActionListener {
+
+        GraphVertex graphVertex;
+
+        public rename(GraphVertex vertex) {
+            graphVertex = vertex;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            String name = JOptionPane.showInputDialog(null, "Name of vertex:", graphVertex.getVertexName());
+            if (name != null) {
+                graphVertex.setVertexName(name);
+                SelectionController.this.setChanged();
+                SelectionController.this.notifyObservers();
+            }
         }
     }
 

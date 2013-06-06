@@ -10,7 +10,12 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,42 +24,60 @@ import javax.swing.*;
  */
 public class GraphFrame extends JFrame {
 
-    private GraphModel graphModel = new GraphModel();
-    private GraphPanel graphPanel;
+    private GraphPanel panel = null;
+    private GraphModel model;
 
     public GraphFrame() {
-        init();
+        createFrame();
+        init(testModel());
     }
 
-    private void init() {
+    private void createFrame() {
         setTitle("Graph editor");
         setSize(Graph.FRAME_WIDTH, Graph.FRAME_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setJMenuBar(addMenuBar());
-
-        GraphVertex vertex1 = graphModel.addVertex(150, 50, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Default");
-        GraphVertex vertex2 = graphModel.addVertex(150, 250, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Dit is lange tekst");
-        GraphVertex vertex3 = graphModel.addVertex(/* kijken of Default werkt*/);
-        graphModel.addEdge(vertex1, vertex2);
-        graphModel.addEdge(vertex2, vertex3);
-
-        graphPanel = new GraphPanel(graphModel);
-        SelectionController selectionController = new SelectionController(graphPanel);
-        graphPanel.addMouseListener(selectionController);
-        graphPanel.addMouseMotionListener(selectionController);
-        this.add(graphPanel);
-
         setVisible(true);
+
+    }
+
+    private void init(GraphModel graphModel) {
+        model = graphModel;
+
+        if (panel != null) {
+            this.remove(panel);
+        }
+
+        panel = new GraphPanel(graphModel);
+        this.add(panel);
+        this.revalidate();
+    }
+
+    private GraphModel testModel() {
+        GraphModel testModel = new GraphModel();
+        GraphVertex vertex1 = testModel.addVertex(150, 50, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Default");
+        GraphVertex vertex2 = testModel.addVertex(150, 250, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Dit is lange tekst");
+        GraphVertex vertex3 = testModel.addVertex(/* kijken of Default werkt*/);
+        testModel.addEdge(vertex1, vertex2);
+        testModel.addEdge(vertex2, vertex3);
+        return testModel;
     }
 
     public void store(File file) {
-
         try {
+            if (!file.exists()) {
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            } else {
+                if (JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to override " + file.getName() + "?") != 0) {
+                    return;
+                }
+            }
             FileOutputStream fos = new FileOutputStream(file);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
 
-            oos.writeObject(this.graphModel);
+            oos.writeObject(this.model);
 
             oos.close();
             fos.close();
@@ -79,9 +102,8 @@ public class GraphFrame extends JFrame {
                 throw new Exception("An illegal class type was found (" + object.getClass().getName() + ")");
             }
 
-            GraphModel model = (GraphModel) object;
-            graphPanel.setModel(model);
-            graphPanel.repaint();
+            GraphModel readModel = (GraphModel) object;
+            init(readModel);
 
             ois.close();
             fis.close();
@@ -89,6 +111,11 @@ public class GraphFrame extends JFrame {
             System.err.println("The file could not be read.");
         } catch (FileNotFoundException e) {
             System.err.println("The desired file was not found.");
+            JOptionPane.showMessageDialog(this, "the file: " + file.getName() + " does not excist");
+            String path = JOptionPane.showInputDialog(this, "Path Name:", file);
+            if (path != null) {
+                read(new File(path));
+            }
         } catch (IOException e) {
             System.err.println("An error with the I/O was reported, program closing.");
         } catch (Exception e) {
@@ -139,7 +166,8 @@ public class GraphFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent ae) {
             final JFrame parent = new JFrame();
-            String path = JOptionPane.showInputDialog(parent, "Path Name:", null);
+            String path = JOptionPane.showInputDialog(parent, "Path Name:", "src/graph/saveFiles/test.txt");
+            path = path.replace("/", "//");
             store(new File(path));
         }
     }
@@ -149,7 +177,7 @@ public class GraphFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent ae) {
             final JFrame parent = new JFrame();
-            String path = JOptionPane.showInputDialog(parent, "Path Name:", null);
+            String path = JOptionPane.showInputDialog(parent, "Path Name:", "src/graph/saveFiles/test.txt");
             path = path.replace("/", "//");
             read(new File(path));
         }
@@ -183,7 +211,7 @@ public class GraphFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            graphModel.addVertexWithName();
+            model.addVertexWithName();
         }
     }
 
@@ -191,7 +219,7 @@ public class GraphFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            graphPanel.setDrawing();
+            panel.setDrawing();
         }
     }
 
