@@ -1,5 +1,7 @@
 package graph;
 
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,6 +18,7 @@ public class GraphModel extends Observable implements Serializable {
 
     private ArrayList<GraphVertex> vertices = new ArrayList<>();
     private ArrayList<GraphEdge> edges = new ArrayList<>();
+    private GraphVertex actionVertex;
 
     public void GraphModel() {
         this.vertices = new ArrayList<>();
@@ -34,6 +37,10 @@ public class GraphModel extends Observable implements Serializable {
 
     public GraphVertex addVertex() {
         return addVertex(0, 0, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Default");
+    }
+    
+    public GraphVertex addVertex(Rectangle rectangle,String name) {
+        return addVertex(rectangle.x, rectangle.y, rectangle.width, rectangle.height, name);
     }
 
     public GraphVertex addVertexWithName() {
@@ -64,6 +71,7 @@ public class GraphModel extends Observable implements Serializable {
             }
         }
         this.vertices.remove(v);
+        setChanged();
         notifyObservers();
     }
 
@@ -85,5 +93,32 @@ public class GraphModel extends Observable implements Serializable {
         for (GraphVertex vertecies : this.getVertices()) {
             vertecies.resetSelected();
         }
+    }
+    
+    public GraphVertex isVertex(Point p) {
+        GraphVertex vertex = null;
+        if (this.getVertices() != null) {
+            for (GraphVertex vertecies : this.getVertices()) {
+                if (vertecies.contains(p)) {
+                    vertex = vertecies;
+                }
+            }
+        }
+        return vertex;
+    }
+    
+    public GraphVertex getSelectedVertex(){
+        for (int i = 0; i < this.vertices.size(); i++) {
+            if (this.vertices.get(i).isSelected()) {
+                return this.vertices.get(i);
+            }
+        }
+        return null;
+    }
+    public void setActionVertex(GraphVertex vertex){
+        actionVertex = vertex;
+    }
+    public GraphVertex getActionVertex(){
+        return actionVertex;
     }
 }

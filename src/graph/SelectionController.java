@@ -1,6 +1,7 @@
 package graph;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.*;
 import java.util.Observable;
 import javax.swing.JMenuItem;
@@ -35,7 +36,7 @@ public class SelectionController extends Observable implements MouseMotionListen
                 if (panel.isDrawing()) {
                     Point mousePosition;
                     mousePosition = me.getPoint();
-                    GraphVertex vertex = isVertex(mousePosition);
+                    GraphVertex vertex = model.isVertex(mousePosition);
                     if (vertex != null) {
                         addEdge(vertex, selectedVertex);
                     }
@@ -61,8 +62,7 @@ public class SelectionController extends Observable implements MouseMotionListen
             hasSelected = false;
             Point mousePosition;
             mousePosition = me.getPoint();
-            GraphVertex vertex = isVertex(mousePosition);
-            
+            GraphVertex vertex = model.isVertex(mousePosition);
             model.deselectAllVertices();
             
             if (vertex != null && !manualAdd) {
@@ -162,28 +162,70 @@ public class SelectionController extends Observable implements MouseMotionListen
     }
 
     private void doPop(MouseEvent e) {
-        GraphVertex vertex = isVertex(e.getPoint());
-        
-        
+        GraphVertex vertex = model.isVertex(e.getPoint());
         if (vertex != null) {
-            PopUpDemo menu = new PopUpDemo(e.getPoint(), vertex);
+            PopUpMenuVertex menu = new PopUpMenuVertex(e.getPoint(), vertex);
             menu.show(e.getComponent(), e.getX(), e.getY());
+        }else{
+            PopUpMenu menu = new PopUpMenu(e.getPoint(), vertex);
+            menu.show(e.getComponent(), e.getX(), e.getY());
+            
         }
     }
 
-    private class PopUpDemo extends JPopupMenu {
+    private class PopUpMenuVertex extends JPopupMenu {
 
         JMenuItem addEdge;
         JMenuItem rename;
+        JMenuItem Cut;
+        JMenuItem Copy;
+        JMenuItem Paste;
 
-        public PopUpDemo(Point p, GraphVertex vertex) {
-            addEdge = new JMenuItem("Add edge");
+        public PopUpMenuVertex(Point p, GraphVertex vertex) {
+            addEdge = new JMenuItem("add Edge");
             addEdge.addActionListener(new addEdge(p));
             add(addEdge);
 
             rename = new JMenuItem("Rename");
             rename.addActionListener(new rename(vertex));
             add(rename);
+            
+            Cut = new JMenuItem("Cut");
+            Cut.addActionListener(new cutAction());
+            add(Cut);
+            
+            Copy = new JMenuItem("Copy");
+            Copy.addActionListener(new copyAction());
+            add(Copy);
+            
+            Paste = new JMenuItem("Paste");
+            Paste.addActionListener(new pasteAction());
+            add(Paste);
+        }
+    }
+    
+    private class PopUpMenu extends JPopupMenu {
+
+        
+        JMenuItem Cut;
+        JMenuItem Copy;
+        JMenuItem Paste;
+        
+
+        public PopUpMenu(Point p, GraphVertex vertex) {
+            
+            
+            Cut = new JMenuItem("Cut");
+            Cut.addActionListener(new cutAction());
+            add(Cut);
+            
+            Copy = new JMenuItem("Copy");
+            Copy.addActionListener(new copyAction());
+            add(Copy);
+            
+            Paste = new JMenuItem("Paste");
+            Paste.addActionListener(new pasteAction());
+            add(Paste);
         }
     }
 
@@ -197,7 +239,7 @@ public class SelectionController extends Observable implements MouseMotionListen
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            selectedVertex = isVertex(point);
+            selectedVertex = model.isVertex(point);
             model.deselectAllVertices();
             selectedVertex.setSelected();
             manualAdd = true;
@@ -224,17 +266,38 @@ public class SelectionController extends Observable implements MouseMotionListen
             }
         }
     }
+    private class cutAction implements ActionListener {
 
-    private GraphVertex isVertex(Point p) {
-        GraphVertex vertex = null;
-        if (model.getVertices() != null) {
-            for (GraphVertex vertecies : model.getVertices()) {
-                if (vertecies.contains(p)) {
-                    vertex = vertecies;
-                }
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            GraphVertex vertex = model.getSelectedVertex();
+            if (vertex != null) {
+                selectedVertex = new GraphVertex(vertex);
+                model.removeVertex(model.getSelectedVertex());
             }
         }
-        
-        return vertex;
+    }
+    
+    private class copyAction implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            GraphVertex vertex = model.getSelectedVertex();
+            if (vertex != null) {
+                model.setActionVertex(new GraphVertex(vertex));
+            }
+        }
+    }
+
+    private class pasteAction implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            Rectangle graphRectangle = model.getActionVertex().getVertexRectangle();
+            graphRectangle.x = graphRectangle.x + 20;
+            graphRectangle.y = graphRectangle.y + 20;
+
+            model.addVertex(graphRectangle, model.getActionVertex().getVertexName());
+        }
     }
 }

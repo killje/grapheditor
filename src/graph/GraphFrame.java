@@ -1,6 +1,7 @@
 package graph;
 
 import java.awt.Event;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.*;
@@ -22,6 +23,8 @@ public class GraphFrame extends JFrame {
         setTitle("Graph editor");
         setSize(Graph.FRAME_WIDTH, Graph.FRAME_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
         setVisible(true);
         init(new GraphModel());
     }
@@ -34,36 +37,39 @@ public class GraphFrame extends JFrame {
         }
 
         panel = new GraphPanel(graphModel);
-        setJMenuBar(addMenuBar());
         this.add(panel);
         setJMenuBar(addMenuBar());
         this.revalidate();
     }
 
-    public void store() {
+    public void store(File path) {
         final JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(".gme", "gme");
-        chooser.removeChoosableFileFilter(chooser.getFileFilter() );
+        chooser.removeChoosableFileFilter(chooser.getFileFilter());
         chooser.addChoosableFileFilter(filter);
         chooser.setFileFilter(filter);
-        
-        chooser.setCurrentDirectory(new File(Paths.get("").toAbsolutePath().toString() + "\\src\\graph\\saveFiles\\"));
-        int returnVal = chooser.showOpenDialog(this);
-        
+
+        chooser.setCurrentDirectory(path);
+        int returnVal = chooser.showSaveDialog(this);
+
         if (returnVal != JFileChooser.APPROVE_OPTION) {
             return;
         }
-        if (!chooser.getTypeDescription(chooser.getSelectedFile()).equals(".gme")) {
+        if (!chooser.getTypeDescription(chooser.getSelectedFile()).equals("GME File")) {
             chooser.setSelectedFile(new File(chooser.getSelectedFile() + ".gme"));
         }
         File file = chooser.getSelectedFile();
-        
+
         try {
             if (!file.exists()) {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
             } else {
-                if (JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to override " + file.getName() + "?") != 0) {
+                if (JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to override " + file.getName() + "?") == 1) {
+                    chooser.hide();
+                    store(file.getParentFile());
+                    return;
+                }else{
                     return;
                 }
             }
@@ -84,13 +90,17 @@ public class GraphFrame extends JFrame {
         }
 
     }
+    
+    public void store(){
+        store(new File(Paths.get("").toAbsolutePath().toString() + "\\src\\graph\\saveFiles\\"));
+    }
 
-    public void read() {
+    public void read(File path) {
         final JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(".gme", "gme");
         chooser.addChoosableFileFilter(filter);
         chooser.setFileFilter(filter);
-        chooser.setCurrentDirectory(new File(Paths.get("").toAbsolutePath().toString() + "\\src\\graph\\saveFiles\\"));
+        chooser.setCurrentDirectory(path);
         int returnVal = chooser.showOpenDialog(this);
         if (returnVal != JFileChooser.APPROVE_OPTION) {
             return;
@@ -115,17 +125,17 @@ public class GraphFrame extends JFrame {
             System.err.println("The file could not be read.");
         } catch (FileNotFoundException e) {
             System.err.println("The desired file was not found.");
-            
-            JOptionPane.showMessageDialog(this, "the file: " + file.getName() + " does not excist");
-            String path = JOptionPane.showInputDialog(this, "Path Name:", file);
-            if (path != null) {
-                read();
-            }
+            JOptionPane.showMessageDialog(this, "the file you gave was not found");
+            read(file.getParentFile());
         } catch (IOException e) {
             System.err.println("An error with the I/O was reported, program closing.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+    }
+    
+    public void read(){
+        read(new File(Paths.get("").toAbsolutePath().toString() + "\\src\\graph\\saveFiles\\"));
     }
 
     private JMenuBar addMenuBar() {
@@ -140,6 +150,9 @@ public class GraphFrame extends JFrame {
         JMenu menuEdit = addMenu("Edit", KeyEvent.VK_E);
         menuEdit.add(addMenuItem("Add vertex", KeyEvent.VK_V, KeyEvent.VK_N, new AddVertexAction()));
         menuEdit.add(addMenuItem("Add edge", KeyEvent.VK_E, new AddEdgeAction()));
+        menuFile.add(addMenuItem("Copy", KeyEvent.VK_C, KeyEvent.VK_C, new CopyAction()));
+        menuFile.add(addMenuItem("Paste", KeyEvent.VK_P, KeyEvent.VK_V, new PasteAction()));
+        menuFile.add(addMenuItem("Cut", KeyEvent.VK_U, KeyEvent.VK_X, new CutAction()));
         menuBar.add(menuEdit);
 
         JMenu menuWindow = addMenu("Window", KeyEvent.VK_W);
@@ -170,6 +183,7 @@ public class GraphFrame extends JFrame {
         inputMap.put(keyStroke, name);
         panel.getActionMap().put(name, actionListener);
         return addMenuItem(name, shortKey, actionListener);
+
     }
 
     private class SaveAction extends AbstractAction {
@@ -233,6 +247,46 @@ public class GraphFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent ae) {
             throw new UnsupportedOperationException("Not supported yet.");
+        }
+    }
+
+    private class CopyAction extends AbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            GraphVertex vertex = model.getSelectedVertex();
+            if (vertex != null) {
+                model.setActionVertex(new GraphVertex(vertex));
+
+            }
+        }
+    }
+    
+    private class CutAction extends AbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            GraphVertex vertex = model.getSelectedVertex();
+            if (vertex != null) {
+                model.setActionVertex(new GraphVertex(vertex));
+                model.removeVertex(model.getSelectedVertex());
+                
+            }
+        }
+    }
+
+    private class PasteAction extends AbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+
+
+            Rectangle graphRectangle = model.getActionVertex().getVertexRectangle();
+            graphRectangle.x = graphRectangle.x + 20;
+            graphRectangle.y = graphRectangle.y + 20;
+
+            model.addVertex(graphRectangle, model.getActionVertex().getVertexName());
+
         }
     }
 }
