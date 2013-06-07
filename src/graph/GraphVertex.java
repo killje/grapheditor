@@ -23,6 +23,11 @@ public class GraphVertex implements Serializable {
         vertex = new Rectangle(x, y, width + 10, height);
         recalculateWidth();
     }
+    
+    public GraphVertex(GraphVertex vertex){
+        this.name = vertex.getVertexName();
+        this.vertex = new Rectangle(vertex.getVertexRectangle());
+    }
 
     public boolean contains(Point p) {
         if (vertex.contains(p)) {
