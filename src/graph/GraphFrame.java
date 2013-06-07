@@ -20,10 +20,9 @@ public class GraphFrame extends JFrame {
     private GraphModel model;
 
     public GraphFrame() {
-        setTitle("Graph editor");
+        setTitle("Graph Editor - Untitled");
         setSize(Graph.FRAME_WIDTH, Graph.FRAME_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 
         setVisible(true);
         init(new GraphModel());
@@ -56,27 +55,27 @@ public class GraphFrame extends JFrame {
         if (returnVal != JFileChooser.APPROVE_OPTION) {
             return;
         }
-        if (!chooser.getTypeDescription(chooser.
-                getSelectedFile()).equals("GME File")) {
-            File file = new File(chooser.getSelectedFile() + ".gme");
-            chooser.setSelectedFile(file);
-        }
-        File file = chooser.getSelectedFile();
+        
+        File file = new File(chooser.getSelectedFile().toString().replace(".gme", "") + ".gme");
 
         try {
             if (!file.exists()) {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
             } else {
-                if (JOptionPane.showConfirmDialog(rootPane, 
-                        "Are you sure you want to override " + 
-                        file.getName() + "?") == 1) {
+                int confirmed = JOptionPane.showConfirmDialog(rootPane, 
+                                    "Are you sure you want to override " + 
+                                    file.getName() + "?");
+                if (confirmed == 1) {
                     store(file.getParentFile());
                     return;
-                } else {
+                } else if(confirmed == 2) {
                     return;
                 }
             }
+            
+            this.setTitle("Graph Editor - " + file.getName());
+            
             FileOutputStream fos = new FileOutputStream(file);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
 
@@ -125,6 +124,8 @@ public class GraphFrame extends JFrame {
                 throw new Exception("An illegal class type was found (" + 
                         object.getClass().getName() + ")");
             }
+            
+            this.setTitle("Graph Editor - " + file.getName());
 
             GraphModel readModel = (GraphModel) object;
             init(readModel);

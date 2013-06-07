@@ -194,13 +194,15 @@ public class SelectionController extends Observable
         JMenuItem Paste;
 
         public PopUpMenuVertex(Point p, GraphVertex vertex) {
-            addEdge = new JMenuItem("add Edge");
+            addEdge = new JMenuItem("Add edge");
             addEdge.addActionListener(new addEdge(p));
             add(addEdge);
 
             rename = new JMenuItem("Rename");
             rename.addActionListener(new rename(vertex));
             add(rename);
+            
+            addSeparator();
 
             Cut = new JMenuItem("Cut");
             Cut.addActionListener(new cutAction());
@@ -308,8 +310,7 @@ public class SelectionController extends Observable
             graphRectangle.x = graphRectangle.x + 20;
             graphRectangle.y = graphRectangle.y + 20;
 
-            model.addVertex(graphRectangle, model.getActionVertex()
-                    .getVertexName());
+            model.addVertex(graphRectangle, model.getActionVertex().getVertexName());
         }
     }
 }
