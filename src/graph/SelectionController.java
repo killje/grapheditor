@@ -50,7 +50,6 @@ public class SelectionController extends Observable implements MouseMotionListen
             }
 
             this.notifyObservers();
-        } else {
         }
         mousePressed(me);
     }
