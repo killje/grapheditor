@@ -19,15 +19,11 @@ public class GraphFrame extends JFrame {
     private GraphModel model;
 
     public GraphFrame() {
-        createFrame();
-        init(testModel());
-    }
-
-    private void createFrame() {
         setTitle("Graph editor");
         setSize(Graph.FRAME_WIDTH, Graph.FRAME_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+        init(new GraphModel());
     }
 
     private void init(GraphModel graphModel) {
@@ -42,16 +38,6 @@ public class GraphFrame extends JFrame {
         this.add(panel);
         setJMenuBar(addMenuBar());
         this.revalidate();
-    }
-
-    private GraphModel testModel() {
-        GraphModel testModel = new GraphModel();
-        GraphVertex vertex1 = testModel.addVertex(150, 50, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Default");
-        GraphVertex vertex2 = testModel.addVertex(150, 250, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Dit is lange tekst");
-        GraphVertex vertex3 = testModel.addVertex();
-        testModel.addEdge(vertex1, vertex2);
-        testModel.addEdge(vertex2, vertex3);
-        return testModel;
     }
 
     public void store() {
