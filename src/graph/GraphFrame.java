@@ -28,8 +28,6 @@ public class GraphFrame extends JFrame {
 
         setJMenuBar(addMenuBar());
         setVisible(true);
-        
-        
     }
 
     private void init(GraphModel graphModel) {
@@ -42,14 +40,14 @@ public class GraphFrame extends JFrame {
         panel = new GraphPanel(graphModel);
         this.add(panel);
         this.revalidate();
-        
+
     }
 
     private GraphModel testModel() {
         GraphModel testModel = new GraphModel();
         GraphVertex vertex1 = testModel.addVertex(150, 50, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Default");
         GraphVertex vertex2 = testModel.addVertex(150, 250, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Dit is lange tekst");
-        GraphVertex vertex3 = testModel.addVertex(/* kijken of Default werkt*/);
+        GraphVertex vertex3 = testModel.addVertex();
         testModel.addEdge(vertex1, vertex2);
         testModel.addEdge(vertex2, vertex3);
         return testModel;
@@ -102,6 +100,7 @@ public class GraphFrame extends JFrame {
             System.err.println("The file could not be read.");
         } catch (FileNotFoundException e) {
             System.err.println("The desired file was not found.");
+            
             JOptionPane.showMessageDialog(this, "the file: " + file.getName() + " does not excist");
             String path = JOptionPane.showInputDialog(this, "Path Name:", file);
             if (path != null) {
@@ -149,14 +148,14 @@ public class GraphFrame extends JFrame {
 
         return menuItem;
     }
-    
+
     private JMenuItem addMenuItem(String name, int shortKey, int keyBindings, AbstractAction actionListener) {
         KeyStroke keyStroke = KeyStroke.getKeyStroke(keyBindings, Event.CTRL_MASK);
         InputMap inputMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         inputMap.put(keyStroke, name);
-        panel.getActionMap().put(name,actionListener);
-        return addMenuItem(name, shortKey, actionListener);
+        panel.getActionMap().put(name, actionListener);
         
+        return addMenuItem(name, shortKey, actionListener);
     }
 
     private class SaveAction extends AbstractAction {
@@ -228,5 +227,4 @@ public class GraphFrame extends JFrame {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
-
 }

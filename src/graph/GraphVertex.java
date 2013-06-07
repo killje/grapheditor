@@ -28,6 +28,7 @@ public class GraphVertex implements Serializable {
         if (vertex.contains(p)) {
             return true;
         }
+        
         return false;
     }
 
@@ -44,6 +45,7 @@ public class GraphVertex implements Serializable {
         FontRenderContext frc = new FontRenderContext(affinetransform, true, true);
         Font font = new Font("Dialog", Font.PLAIN, 12);
         int textwidth = (int) (font.getStringBounds(name, frc).getWidth());
+        
         if (textwidth > Graph.STANDARD_VERTEX_WIDTH) {
             this.setWidth(textwidth);
         } else {

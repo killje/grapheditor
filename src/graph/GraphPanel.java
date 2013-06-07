@@ -93,14 +93,15 @@ public class GraphPanel extends JPanel implements Observer {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        
         if (this.isDrawing() && this.drawVertex != null) {
             Rectangle vertexRectangle = this.drawVertex.getVertexRectangle();
             Point point = this.mousePoint;
             g.drawLine(vertexRectangle.x + (vertexRectangle.width / 2), vertexRectangle.y + (vertexRectangle.height / 2), point.x, point.y);
         }
+        
         paintEdges(g);
         paintVertices(g);
-
     }
 
     @Override
