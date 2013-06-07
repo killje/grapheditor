@@ -25,8 +25,6 @@ public class GraphFrame extends JFrame {
         setTitle("Graph editor");
         setSize(Graph.FRAME_WIDTH, Graph.FRAME_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        setJMenuBar(addMenuBar());
         setVisible(true);
     }
 
@@ -38,9 +36,9 @@ public class GraphFrame extends JFrame {
         }
 
         panel = new GraphPanel(graphModel);
+        setJMenuBar(addMenuBar());
         this.add(panel);
         this.revalidate();
-
     }
 
     private GraphModel testModel() {
