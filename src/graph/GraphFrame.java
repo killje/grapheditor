@@ -4,7 +4,9 @@ import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.*;
+import java.nio.file.Paths;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -26,10 +28,10 @@ public class GraphFrame extends JFrame {
         setSize(Graph.FRAME_WIDTH, Graph.FRAME_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        setJMenuBar(addMenuBar());
+
         setVisible(true);
-        
-        
+
+
     }
 
     private void init(GraphModel graphModel) {
@@ -41,8 +43,9 @@ public class GraphFrame extends JFrame {
 
         panel = new GraphPanel(graphModel);
         this.add(panel);
+        setJMenuBar(addMenuBar());
         this.revalidate();
-        
+
     }
 
     private GraphModel testModel() {
@@ -55,7 +58,24 @@ public class GraphFrame extends JFrame {
         return testModel;
     }
 
-    public void store(File file) {
+    public void store() {
+        final JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(".gme", "gme");
+        chooser.removeChoosableFileFilter(chooser.getFileFilter() );
+        chooser.addChoosableFileFilter(filter);
+        chooser.setFileFilter(filter);
+        
+        chooser.setCurrentDirectory(new File(Paths.get("").toAbsolutePath().toString() + "\\src\\graph\\saveFiles\\"));
+        int returnVal = chooser.showOpenDialog(this);
+        
+        if (returnVal != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        if (!chooser.getTypeDescription(chooser.getSelectedFile()).equals(".gme")) {
+            chooser.setSelectedFile(new File(chooser.getSelectedFile() + ".gme"));
+        }
+        File file = chooser.getSelectedFile();
+        
         try {
             if (!file.exists()) {
                 file.getParentFile().mkdirs();
@@ -83,7 +103,18 @@ public class GraphFrame extends JFrame {
 
     }
 
-    public void read(File file) {
+    public void read() {
+        final JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(".gme", "gme");
+        chooser.addChoosableFileFilter(filter);
+        chooser.setFileFilter(filter);
+        chooser.setCurrentDirectory(new File(Paths.get("").toAbsolutePath().toString() + "\\src\\graph\\saveFiles\\"));
+        int returnVal = chooser.showOpenDialog(this);
+        if (returnVal != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        File file = chooser.getSelectedFile();
+
         try {
             FileInputStream fis = new FileInputStream(file);
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -105,7 +136,7 @@ public class GraphFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "the file: " + file.getName() + " does not excist");
             String path = JOptionPane.showInputDialog(this, "Path Name:", file);
             if (path != null) {
-                read(new File(path));
+                read();
             }
         } catch (IOException e) {
             System.err.println("An error with the I/O was reported, program closing.");
@@ -149,24 +180,21 @@ public class GraphFrame extends JFrame {
 
         return menuItem;
     }
-    
+
     private JMenuItem addMenuItem(String name, int shortKey, int keyBindings, AbstractAction actionListener) {
         KeyStroke keyStroke = KeyStroke.getKeyStroke(keyBindings, Event.CTRL_MASK);
         InputMap inputMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         inputMap.put(keyStroke, name);
-        panel.getActionMap().put(name,actionListener);
+        panel.getActionMap().put(name, actionListener);
         return addMenuItem(name, shortKey, actionListener);
-        
+
     }
 
     private class SaveAction extends AbstractAction {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            final JFrame parent = new JFrame();
-            String path = JOptionPane.showInputDialog(parent, "Path Name:", "src/graph/saveFiles/test.txt");
-            path = path.replace("/", "//");
-            store(new File(path));
+            store();
         }
     }
 
@@ -174,10 +202,7 @@ public class GraphFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            final JFrame parent = new JFrame();
-            String path = JOptionPane.showInputDialog(parent, "Path Name:", "src/graph/saveFiles/test.txt");
-            path = path.replace("/", "//");
-            read(new File(path));
+            read();
         }
     }
 
@@ -228,5 +253,4 @@ public class GraphFrame extends JFrame {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
-
 }
