@@ -117,12 +117,12 @@ public class SelectionController extends Observable implements MouseMotionListen
 
     @Override
     public void mouseEntered(MouseEvent me) {
-        //not suported
+        //not implemented
     }
 
     @Override
     public void mouseExited(MouseEvent me) {
-        //not suported
+        //not implemented
     }
 
     @Override
