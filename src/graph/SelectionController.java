@@ -177,11 +177,11 @@ public class SelectionController extends Observable implements MouseMotionListen
         JMenuItem rename;
 
         public PopUpDemo(Point p, GraphVertex vertex) {
-            addEdge = new JMenuItem("add Edge");
+            addEdge = new JMenuItem("Add edge");
             addEdge.addActionListener(new addEdge(p));
             add(addEdge);
 
-            rename = new JMenuItem("rename");
+            rename = new JMenuItem("Rename");
             rename.addActionListener(new rename(vertex));
             add(rename);
         }
