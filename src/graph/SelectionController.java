@@ -1,12 +1,7 @@
 package graph;
 
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.Observable;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -51,7 +46,6 @@ public class SelectionController extends Observable implements MouseMotionListen
             }
 
             this.notifyObservers();
-        } else {
         }
         mousePressed(me);
     }
@@ -69,6 +63,7 @@ public class SelectionController extends Observable implements MouseMotionListen
             mousePosition = me.getPoint();
             GraphVertex vertex = model.isVertex(mousePosition);
             model.deselectAllVertices();
+            
             if (vertex != null && !manualAdd) {
                 vertex.setSelected();
                 hasSelected = true;
@@ -81,11 +76,13 @@ public class SelectionController extends Observable implements MouseMotionListen
             }
             if (!hasSelected && !manualAdd) {
                 String vertexName = model.getNameForVertex();
+                
                 if (vertexName != null) {
                     model.addVertex(me.getX(), me.getY(), Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, vertexName);
                 }
             }
         }
+        
         this.setChanged();
         this.notifyObservers();
     }
@@ -102,6 +99,7 @@ public class SelectionController extends Observable implements MouseMotionListen
                 Point mousePosition;
                 mousePosition = me.getPoint();
                 panel.drawLine(mousePosition, selectedVertex);
+                
                 this.setChanged();
             } else {
 
@@ -110,6 +108,7 @@ public class SelectionController extends Observable implements MouseMotionListen
                             me.getX() - (int) diffPosition.getX(),
                             me.getY() - (int) diffPosition.getY());
                     selectedVertex.setPosition(point);
+                    
                     this.setChanged();
                 }
             }
@@ -119,12 +118,12 @@ public class SelectionController extends Observable implements MouseMotionListen
 
     @Override
     public void mouseEntered(MouseEvent me) {
-        //not suported
+        //not implemented
     }
 
     @Override
     public void mouseExited(MouseEvent me) {
-        //not suported
+        //not implemented
     }
 
     @Override
@@ -134,9 +133,11 @@ public class SelectionController extends Observable implements MouseMotionListen
                 Point mousePosition;
                 mousePosition = me.getPoint();
                 panel.drawLine(mousePosition, selectedVertex);
+                
                 this.setChanged();
             }
         }
+        
         this.notifyObservers();
     }
 
@@ -144,13 +145,16 @@ public class SelectionController extends Observable implements MouseMotionListen
         if (v1 != v2) {
             hasSelected = false;
             boolean doContinue = true;
+            
             for (GraphEdge edge : model.getEdges()) {
                 if (edge.isIncedent(v1) && edge.isIncedent(v2)) {
                     doContinue = false;
                 }
             }
+            
             if (doContinue) {
                 model.addEdge(v1, v2);
+                
                 this.setChanged();
             }
         }

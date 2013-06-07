@@ -45,9 +45,11 @@ public class GraphModel extends Observable implements Serializable {
 
     public GraphVertex addVertexWithName() {
         String name = getNameForVertex();
+
         if (name != null) {
             return addVertex(0, 0, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, name);
         }
+
         return null;
     }
 
@@ -85,11 +87,6 @@ public class GraphModel extends Observable implements Serializable {
         final JFrame parent = new JFrame();
         String name = JOptionPane.showInputDialog(parent, "Name of vertex:", null);
         return name;
-    }
-
-    public void addEdgeAction() {
-        final JFrame parent = new JFrame();
-        JOptionPane.showMessageDialog(parent, "To create an edge drag the mouse between the two vertecies.");
     }
 
     public void deselectAllVertices() {
