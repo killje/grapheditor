@@ -20,6 +20,7 @@ public class GraphEdge implements Serializable {
         if (this.first == v || this.second == v) {
             return true;
         }
+        
         return false;
     }
 

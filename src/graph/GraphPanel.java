@@ -42,17 +42,17 @@ public class GraphPanel extends JPanel implements Observer {
     public void paintVertices(Graphics g) {
         if (model.getVertices() != null) {
             for (GraphVertex vertex : model.getVertices()) {
-                Rectangle rect = vertex.getVertexRectangle(); // de vertex zelf
-                String vertexName = vertex.getVertexName(); // de vertex naam
+                Rectangle rect = vertex.getVertexRectangle();
+                String vertexName = vertex.getVertexName();
 
-                // de vertex x, y, width en height
                 int rectX = (int) rect.getX();
                 int rectY = (int) rect.getY();
                 int rectWidth = (int) rect.getWidth();
                 int rectHeight = (int) rect.getHeight();
 
-                // om te bepalen hoelang een string is zodat je weet hoe je moet centreren
-                Rectangle bounds = g.getFontMetrics().getStringBounds(vertexName, g).getBounds();
+                // calculation of string width (for centering purposes)
+                Rectangle bounds = g.getFontMetrics()
+                        .getStringBounds(vertexName, g).getBounds();
 
                 int centerWidth = rectX + (rectWidth / 2) - (bounds.width / 2);
                 int centerHeight = rectY + (rectHeight / 2) + 5;
@@ -63,11 +63,11 @@ public class GraphPanel extends JPanel implements Observer {
                     g.setColor(Color.WHITE);
                 }
 
-                g.fillRect(rectX, rectY, rectWidth, rectHeight); //vertex binnenkant tekenen
+                g.fillRect(rectX, rectY, rectWidth, rectHeight);
                 g.setColor(Color.GRAY);
-                g.drawRect(rectX, rectY, rectWidth, rectHeight); // vertex border tekenen
+                g.drawRect(rectX, rectY, rectWidth, rectHeight);
                 g.setColor(Color.BLACK);
-                g.drawString(vertexName, centerWidth, centerHeight); // vertex naam neerzetten
+                g.drawString(vertexName, centerWidth, centerHeight);
             }
         }
 
@@ -85,7 +85,7 @@ public class GraphPanel extends JPanel implements Observer {
                 int V2Y = (int) v2.getY() + (int) v2.getHeight() / 2;
 
                 g.setColor(Color.BLACK);
-                g.drawLine(v1X, v1Y, v2X, V2Y); //lijn tussen twee vertecies
+                g.drawLine(v1X, v1Y, v2X, V2Y);
             }
         }
     }
@@ -93,13 +93,15 @@ public class GraphPanel extends JPanel implements Observer {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
+
         if (this.isDrawing() && this.drawVertex != null) {
             Rectangle vertexRectangle = this.drawVertex.getVertexRectangle();
             Point point = this.mousePoint;
-            g.drawLine(vertexRectangle.x + (vertexRectangle.width / 2), vertexRectangle.y + (vertexRectangle.height / 2), point.x, point.y);
+            g.drawLine(vertexRectangle.x + (vertexRectangle.width / 2), 
+                    vertexRectangle.y + (vertexRectangle.height / 2), 
+                    point.x, point.y);
         }
-        
+
         paintEdges(g);
         paintVertices(g);
     }

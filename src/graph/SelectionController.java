@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.*;
 import java.util.Observable;
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -13,7 +14,8 @@ import javax.swing.JPopupMenu;
  * @author Patrick Beuks (s2288842), Floris Huizinga (s2397617) and
  * @author Timo Smit (s2337789)
  */
-public class SelectionController extends Observable implements MouseMotionListener, MouseListener {
+public class SelectionController extends Observable 
+    implements MouseMotionListener, MouseListener {
 
     private Point diffPosition;
     private GraphVertex selectedVertex;
@@ -64,7 +66,7 @@ public class SelectionController extends Observable implements MouseMotionListen
             mousePosition = me.getPoint();
             GraphVertex vertex = model.isVertex(mousePosition);
             model.deselectAllVertices();
-            
+
             if (vertex != null && !manualAdd) {
                 vertex.setSelected();
                 hasSelected = true;
@@ -76,14 +78,18 @@ public class SelectionController extends Observable implements MouseMotionListen
                         - (int) vertex.getVertexRectangle().getY());
             }
             if (!hasSelected && !manualAdd) {
-                String vertexName = model.getNameForVertex();
-                
+                final JFrame parent = new JFrame();
+                String vertexName = JOptionPane.showInputDialog(parent, 
+                        "Name of vertex:", null);
+
                 if (vertexName != null) {
-                    model.addVertex(me.getX(), me.getY(), Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, vertexName);
+                    model.addVertex(me.getX(), me.getY(), 
+                            Graph.STANDARD_VERTEX_WIDTH, 
+                            Graph.STANDARD_VERTEX_HEIGHT, vertexName);
                 }
             }
         }
-        
+
         this.setChanged();
         this.notifyObservers();
     }
@@ -100,7 +106,7 @@ public class SelectionController extends Observable implements MouseMotionListen
                 Point mousePosition;
                 mousePosition = me.getPoint();
                 panel.drawLine(mousePosition, selectedVertex);
-                
+
                 this.setChanged();
             } else {
 
@@ -109,7 +115,7 @@ public class SelectionController extends Observable implements MouseMotionListen
                             me.getX() - (int) diffPosition.getX(),
                             me.getY() - (int) diffPosition.getY());
                     selectedVertex.setPosition(point);
-                    
+
                     this.setChanged();
                 }
             }
@@ -134,11 +140,11 @@ public class SelectionController extends Observable implements MouseMotionListen
                 Point mousePosition;
                 mousePosition = me.getPoint();
                 panel.drawLine(mousePosition, selectedVertex);
-                
+
                 this.setChanged();
             }
         }
-        
+
         this.notifyObservers();
     }
 
@@ -146,30 +152,36 @@ public class SelectionController extends Observable implements MouseMotionListen
         if (v1 != v2) {
             hasSelected = false;
             boolean doContinue = true;
-            
+
             for (GraphEdge edge : model.getEdges()) {
                 if (edge.isIncedent(v1) && edge.isIncedent(v2)) {
                     doContinue = false;
                 }
             }
-            
+
             if (doContinue) {
                 model.addEdge(v1, v2);
-                
+
                 this.setChanged();
             }
         }
     }
 
+    /**
+     * @description Creates a context menu when using the right mouse button,
+     * depending on where the user clicked (either on a vertex or open space).
+     * 
+     * @param e the mouse data
+     */
     private void doPop(MouseEvent e) {
         GraphVertex vertex = model.isVertex(e.getPoint());
+        
         if (vertex != null) {
             PopUpMenuVertex menu = new PopUpMenuVertex(e.getPoint(), vertex);
             menu.show(e.getComponent(), e.getX(), e.getY());
-        }else{
+        } else {
             PopUpMenu menu = new PopUpMenu(e.getPoint(), vertex);
             menu.show(e.getComponent(), e.getX(), e.getY());
-            
         }
     }
 
@@ -189,40 +201,36 @@ public class SelectionController extends Observable implements MouseMotionListen
             rename = new JMenuItem("Rename");
             rename.addActionListener(new rename(vertex));
             add(rename);
-            
+
             Cut = new JMenuItem("Cut");
             Cut.addActionListener(new cutAction());
             add(Cut);
-            
+
             Copy = new JMenuItem("Copy");
             Copy.addActionListener(new copyAction());
             add(Copy);
-            
+
             Paste = new JMenuItem("Paste");
             Paste.addActionListener(new pasteAction());
             add(Paste);
         }
     }
-    
+
     private class PopUpMenu extends JPopupMenu {
 
-        
         JMenuItem Cut;
         JMenuItem Copy;
         JMenuItem Paste;
-        
 
         public PopUpMenu(Point p, GraphVertex vertex) {
-            
-            
             Cut = new JMenuItem("Cut");
             Cut.addActionListener(new cutAction());
             add(Cut);
-            
+
             Copy = new JMenuItem("Copy");
             Copy.addActionListener(new copyAction());
             add(Copy);
-            
+
             Paste = new JMenuItem("Paste");
             Paste.addActionListener(new pasteAction());
             add(Paste);
@@ -258,7 +266,8 @@ public class SelectionController extends Observable implements MouseMotionListen
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            String name = JOptionPane.showInputDialog(null, "Name of vertex:", graphVertex.getVertexName());
+            String name = JOptionPane.showInputDialog(null, "Name of vertex:", 
+                    graphVertex.getVertexName());
             if (name != null) {
                 graphVertex.setVertexName(name);
                 SelectionController.this.setChanged();
@@ -266,6 +275,7 @@ public class SelectionController extends Observable implements MouseMotionListen
             }
         }
     }
+
     private class cutAction implements ActionListener {
 
         @Override
@@ -277,7 +287,7 @@ public class SelectionController extends Observable implements MouseMotionListen
             }
         }
     }
-    
+
     private class copyAction implements ActionListener {
 
         @Override
@@ -293,11 +303,13 @@ public class SelectionController extends Observable implements MouseMotionListen
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            Rectangle graphRectangle = model.getActionVertex().getVertexRectangle();
+            Rectangle graphRectangle = model.getActionVertex()
+                    .getVertexRectangle();
             graphRectangle.x = graphRectangle.x + 20;
             graphRectangle.y = graphRectangle.y + 20;
 
-            model.addVertex(graphRectangle, model.getActionVertex().getVertexName());
+            model.addVertex(graphRectangle, model.getActionVertex()
+                    .getVertexName());
         }
     }
 }

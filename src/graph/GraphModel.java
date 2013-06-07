@@ -6,8 +6,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Observable;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,7 +23,8 @@ public class GraphModel extends Observable implements Serializable {
         this.edges = new ArrayList<>();
     }
 
-    public GraphVertex addVertex(int x, int y, int width, int height, String name) {
+    public GraphVertex addVertex(int x, int y, int width, int height, 
+            String name) {
         GraphVertex vertex = new GraphVertex(x, y, width, height, name);
 
         this.vertices.add(vertex);
@@ -35,22 +34,23 @@ public class GraphModel extends Observable implements Serializable {
         return vertex;
     }
 
-    public GraphVertex addVertex() {
-        return addVertex(0, 0, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, "Default");
-    }
-    
-    public GraphVertex addVertex(Rectangle rectangle,String name) {
-        return addVertex(rectangle.x, rectangle.y, rectangle.width, rectangle.height, name);
+    public GraphVertex addVertex(Rectangle rectangle, String name) {
+        return addVertex(rectangle.x, rectangle.y, rectangle.width, 
+                rectangle.height, name);
     }
 
-    public GraphVertex addVertexWithName() {
-        String name = getNameForVertex();
-
+    public GraphVertex addVertex(String name) {
         if (name != null) {
-            return addVertex(0, 0, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, name);
+            return addVertex(0, 0, Graph.STANDARD_VERTEX_WIDTH, 
+                    Graph.STANDARD_VERTEX_HEIGHT, name);
         }
 
         return null;
+    }
+
+    public GraphVertex addVertex() {
+        return addVertex(0, 0, Graph.STANDARD_VERTEX_WIDTH, 
+                Graph.STANDARD_VERTEX_HEIGHT, "Default");
     }
 
     public GraphEdge addEdge(GraphVertex vertex1, GraphVertex vertex2) {
@@ -83,42 +83,41 @@ public class GraphModel extends Observable implements Serializable {
         return this.edges;
     }
 
-    public String getNameForVertex() {
-        final JFrame parent = new JFrame();
-        String name = JOptionPane.showInputDialog(parent, "Name of vertex:", null);
-        return name;
-    }
-
     public void deselectAllVertices() {
-        for (GraphVertex vertecies : this.getVertices()) {
-            vertecies.resetSelected();
+        for (GraphVertex vertex : this.getVertices()) {
+            vertex.resetSelected();
         }
     }
-    
+
     public GraphVertex isVertex(Point p) {
-        GraphVertex vertex = null;
+        GraphVertex clickedVertex = null;
+
         if (this.getVertices() != null) {
-            for (GraphVertex vertecies : this.getVertices()) {
-                if (vertecies.contains(p)) {
-                    vertex = vertecies;
+            for (GraphVertex vertex : this.getVertices()) {
+                if (vertex.contains(p)) {
+                    clickedVertex = vertex;
                 }
             }
         }
-        return vertex;
+
+        return clickedVertex;
     }
-    
-    public GraphVertex getSelectedVertex(){
+
+    public GraphVertex getSelectedVertex() {
         for (int i = 0; i < this.vertices.size(); i++) {
             if (this.vertices.get(i).isSelected()) {
                 return this.vertices.get(i);
             }
         }
+
         return null;
     }
-    public void setActionVertex(GraphVertex vertex){
+
+    public void setActionVertex(GraphVertex vertex) {
         actionVertex = vertex;
     }
-    public GraphVertex getActionVertex(){
+
+    public GraphVertex getActionVertex() {
         return actionVertex;
     }
 }

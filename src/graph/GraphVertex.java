@@ -23,8 +23,8 @@ public class GraphVertex implements Serializable {
         vertex = new Rectangle(x, y, width + 10, height);
         recalculateWidth();
     }
-    
-    public GraphVertex(GraphVertex vertex){
+
+    public GraphVertex(GraphVertex vertex) {
         this.name = vertex.getVertexName();
         this.vertex = new Rectangle(vertex.getVertexRectangle());
     }
@@ -33,7 +33,7 @@ public class GraphVertex implements Serializable {
         if (vertex.contains(p)) {
             return true;
         }
-        
+
         return false;
     }
 
@@ -45,12 +45,17 @@ public class GraphVertex implements Serializable {
         this.vertex.setSize(width + 20, (int) this.vertex.getHeight());
     }
 
+    /**
+     * @description Recalculates the vertex width by recreating the font used
+     * by the paint() function.
+     */
     public void recalculateWidth() {
         AffineTransform affinetransform = new AffineTransform();
-        FontRenderContext frc = new FontRenderContext(affinetransform, true, true);
+        FontRenderContext frc = 
+                new FontRenderContext(affinetransform, true, true);
         Font font = new Font("Dialog", Font.PLAIN, 12);
         int textwidth = (int) (font.getStringBounds(name, frc).getWidth());
-        
+
         if (textwidth > Graph.STANDARD_VERTEX_WIDTH) {
             this.setWidth(textwidth);
         } else {
