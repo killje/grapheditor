@@ -1,21 +1,10 @@
 package graph;
 
+import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.NotSerializableException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import javax.swing.AbstractAction;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
+import java.io.*;
+import javax.swing.*;
 
 /**
  *
@@ -39,7 +28,8 @@ public class GraphFrame extends JFrame {
 
         setJMenuBar(addMenuBar());
         setVisible(true);
-
+        
+        
     }
 
     private void init(GraphModel graphModel) {
@@ -52,6 +42,7 @@ public class GraphFrame extends JFrame {
         panel = new GraphPanel(graphModel);
         this.add(panel);
         this.revalidate();
+        
     }
 
     private GraphModel testModel() {
@@ -127,15 +118,13 @@ public class GraphFrame extends JFrame {
         JMenuBar menuBar = new JMenuBar();
 
         JMenu menuFile = addMenu("File", KeyEvent.VK_F);
-        menuFile.add(addMenuItem("Load", KeyEvent.VK_L, new LoadAction()));
-        menuFile.add(addMenuItem("Save", KeyEvent.VK_S, new SaveAction()));
+        menuFile.add(addMenuItem("Load", KeyEvent.VK_L, KeyEvent.VK_O, new LoadAction()));
+        menuFile.add(addMenuItem("Save", KeyEvent.VK_S, KeyEvent.VK_S, new SaveAction()));
         menuFile.add(addMenuItem("Quit", KeyEvent.VK_Q, new QuitAction()));
         menuBar.add(menuFile);
 
         JMenu menuEdit = addMenu("Edit", KeyEvent.VK_E);
-        menuEdit.add(addMenuItem("Undo", KeyEvent.VK_U, new UndoAction()));
-        menuEdit.add(addMenuItem("Redo", KeyEvent.VK_R, new RedoAction()));
-        menuEdit.add(addMenuItem("Add vertex", KeyEvent.VK_V, new AddVertexAction()));
+        menuEdit.add(addMenuItem("Add vertex", KeyEvent.VK_V, KeyEvent.VK_N, new AddVertexAction()));
         menuEdit.add(addMenuItem("Add edge", KeyEvent.VK_E, new AddEdgeAction()));
         menuBar.add(menuEdit);
 
@@ -159,6 +148,15 @@ public class GraphFrame extends JFrame {
         menuItem.setMnemonic(shortKey);
 
         return menuItem;
+    }
+    
+    private JMenuItem addMenuItem(String name, int shortKey, int keyBindings, AbstractAction actionListener) {
+        KeyStroke keyStroke = KeyStroke.getKeyStroke(keyBindings, Event.CTRL_MASK);
+        InputMap inputMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMap.put(keyStroke, name);
+        panel.getActionMap().put(name,actionListener);
+        return addMenuItem(name, shortKey, actionListener);
+        
     }
 
     private class SaveAction extends AbstractAction {
@@ -230,4 +228,5 @@ public class GraphFrame extends JFrame {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
+
 }

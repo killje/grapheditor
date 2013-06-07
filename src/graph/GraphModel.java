@@ -37,8 +37,11 @@ public class GraphModel extends Observable implements Serializable {
     }
 
     public GraphVertex addVertexWithName() {
-        return addVertex(0, 0, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, getNameForVertex());
-
+        String name = getNameForVertex();
+        if (name != null) {
+            return addVertex(0, 0, Graph.STANDARD_VERTEX_WIDTH, Graph.STANDARD_VERTEX_HEIGHT, name);
+        }
+        return null;
     }
 
     public GraphEdge addEdge(GraphVertex vertex1, GraphVertex vertex2) {
